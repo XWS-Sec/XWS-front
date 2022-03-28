@@ -1,6 +1,10 @@
+import MyRouter from './components/MyRouter';
+
 function App() {
   return (
-    <div className='text-3xl font-bold underline text-purple-600'>web-app</div>
+    <div className=''>
+      <MyRouter />
+    </div>
   );
 }
 

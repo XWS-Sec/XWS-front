@@ -70,7 +70,7 @@ const LoginPage = () => {
       <div className='flex flex-col items-center'>
         <div className='flex flex-col items-center mb-3'>
           <input
-            className='input p-1 mb-2 md:text-lg'
+            className='input mb-2 md:text-lg'
             type='text'
             placeholder='username'
             name='username'
@@ -78,7 +78,7 @@ const LoginPage = () => {
             onKeyDown={onInputKeyDown}
           />
           <input
-            className='input p-1 md:text-lg'
+            className='input md:text-lg'
             type='password'
             placeholder='password'
             onChange={passwordChangeHandler}

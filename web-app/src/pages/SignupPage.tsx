@@ -1,13 +1,17 @@
 import { useContext, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import ErrorLabel from '../components/common/ErrorLabel';
 import InputWithLabel from '../components/common/InputWithLabel';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-import AuthContext from '../context/auth-context';
+import AuthContext, { User } from '../context/auth-context';
 import CreateUserDto from '../dtos/create-user-dto';
+import { HttpStatusCode } from '../utils/http-status-code.enum';
+import localStorageUtil from '../utils/local-storage/local-storage-util';
 import SignupValidation from '../utils/signup-validation';
 
-const Signup = () => {
+const SignupPage = () => {
   const authContext = useContext(AuthContext);
+  const navigate = useNavigate();
   const signupValidation = new SignupValidation();
 
   // SignupValidation.validateEmail(value: string) and SignupValidation.validateUsername(value: string) use debounce, so we need refs
@@ -228,6 +232,7 @@ const Signup = () => {
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: dateOfBirth,
+        phoneNumber: phoneNumber,
         isPrivate: isPrivate,
         profileDescription: profileDescription,
       };
@@ -237,7 +242,78 @@ const Signup = () => {
     }
   };
 
-  const register = async (createUserDto: CreateUserDto) => {};
+  const register = async (createUserDto: CreateUserDto) => {
+    const url: string = '/api/register';
+
+    setFetching(true);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(createUserDto),
+    });
+
+    switch (response.status) {
+      case HttpStatusCode.OK:
+        setErrorText('');
+        await logIn();
+        break;
+      case HttpStatusCode.BAD_REQUEST:
+        setFetching(false);
+        setErrorText('Bad request.');
+        break;
+      default:
+        setFetching(false);
+        setErrorText('Unknown error occurred.');
+        break;
+    }
+  };
+
+  const logIn = async () => {
+    const url: string = '/api/login';
+    const data = { username: username, password: password };
+
+    setFetching(true);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    switch (response.status) {
+      case HttpStatusCode.OK:
+        setErrorText('');
+
+        const data = await response.json();
+
+        const user: User = {
+          loggedIn: true,
+          id: data.id,
+          username: data.username,
+          role: data.role,
+        };
+
+        localStorageUtil.setUser(user);
+        authContext.updateAuthContext(user);
+
+        setFetching(false);
+        navigate('/');
+        break;
+      case HttpStatusCode.BAD_REQUEST:
+        setFetching(false);
+        setErrorText('Invalid credentials.');
+        break;
+      default:
+        setFetching(false);
+        setErrorText('Unknown error occurred.');
+        break;
+    }
+  };
 
   return (
     <div className='flex flex-col items-center md:h-screen bg-gray-200 overflow-y-auto'>
@@ -355,4 +431,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;

@@ -5,6 +5,7 @@ export default interface CreateUserDto {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  phoneNumber: string;
   isPrivate: boolean;
   profileDescription: string;
 }

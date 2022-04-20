@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import AuthContext, { User } from '../context/auth-context';
+import { Role } from '../model/enums/role.enum';
 import localStorageUtil from '../utils/local-storage/local-storage-util';
 import { sleep } from '../utils/sleep';
 
@@ -33,10 +34,11 @@ const LoginPage = () => {
 
     if (username === 'fake_user' && password === 'fakepass123') {
       const user: User = {
-        accessToken: 'fake.access_token.123',
+        //accessToken: 'fake.access_token.123',
         loggedIn: true,
         id: 1,
         username: 'fake_user',
+        role: Role.USER,
       };
 
       localStorageUtil.setUser(user);

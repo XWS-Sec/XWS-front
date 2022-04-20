@@ -4,7 +4,8 @@ import ErrorLabel from '../components/common/ErrorLabel';
 import InputWithLabel from '../components/common/InputWithLabel';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import AuthContext, { User } from '../context/auth-context';
-import CreateUserDto from '../dtos/create-user-dto';
+import CreateUserDto from '../dtos/create-user.dto';
+import { Gender } from '../model/enums/gender.enum';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
 import localStorageUtil from '../utils/local-storage/local-storage-util';
 import SignupValidation from '../utils/signup-validation';
@@ -33,6 +34,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPrivate, setIsPrivate] = useState(false);
   const [profileDescription, setProfileDescription] = useState('');
+  const [gender, setGender] = useState(Gender.MALE);
 
   const [emailErrorText, setEmailErrorText] = useState('');
   const [usernameErrorText, setUsernameErrorText] = useState('');
@@ -135,6 +137,11 @@ const SignupPage = () => {
     }
   };
 
+  const genderChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const valueStr = event.target.value;
+    setGender(valueStr as Gender);
+  };
+
   const phoneNumberChangeHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -232,6 +239,7 @@ const SignupPage = () => {
         firstName: firstName,
         lastName: lastName,
         dateOfBirth: dateOfBirth,
+        gender: gender,
         phoneNumber: phoneNumber,
         isPrivate: isPrivate,
         profileDescription: profileDescription,
@@ -320,7 +328,7 @@ const SignupPage = () => {
       <div className='flex flex-col text-lg bg-white rounded my-3 lg:my-8 mx-3 p-8 shadow-lg md:w-500px'>
         <InputWithLabel
           type='text'
-          text='Email'
+          text='Email:'
           name='email'
           placeholder='email'
           onChange={emailChangeHandler}
@@ -329,7 +337,7 @@ const SignupPage = () => {
 
         <InputWithLabel
           type='text'
-          text='Username'
+          text='Username:'
           name='username'
           placeholder='username'
           onChange={usernameChangeHandler}
@@ -365,6 +373,15 @@ const SignupPage = () => {
           />
         </div>
         <ErrorLabel text={dateOfBirthErrorText} />
+
+        <div className='flex flex-wrap items-center mb-2'>
+          <p className='my-1 w-44 whitespace-nowrap'>Gender:</p>
+          <select className='input p-1' onChange={genderChangeHandler}>
+            <option value='Male'>male</option>
+            <option value='Female'>female</option>
+            <option value='Other'>other</option>
+          </select>
+        </div>
 
         <InputWithLabel
           type='text'

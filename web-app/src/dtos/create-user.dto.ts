@@ -1,3 +1,5 @@
+import { Gender } from '../model/enums/gender.enum';
+
 export default interface CreateUserDto {
   email: string;
   username: string;
@@ -5,6 +7,7 @@ export default interface CreateUserDto {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  gender: Gender;
   phoneNumber: string;
   isPrivate: boolean;
   profileDescription: string;

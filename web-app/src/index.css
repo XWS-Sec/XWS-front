@@ -30,3 +30,15 @@
     focus:outline-none focus:border-green-500;
   }
 }
+
+@layer utilities {
+  @variants responsive {
+    .w-500px {
+      width: 500px;
+    }
+
+    .w-614px {
+      width: 614px;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import MyRouter from './components/MyRouter';
 import AuthContext, { User } from './context/auth-context';
-import localStorageUtil from './utils/local-storage/local-storage-util';
+import localStorageUtil from './utils/local-storage/local-storage.util';
 
 function App() {
   const [user, setUser] = useState<User>(localStorageUtil.getUser());

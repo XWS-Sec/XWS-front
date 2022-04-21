@@ -7,7 +7,7 @@ import AuthContext, { User } from '../context/auth-context';
 import CreateUserDto from '../dtos/create-user.dto';
 import { Gender } from '../model/enums/gender.enum';
 import { HttpStatusCode } from '../utils/http-status-code.enum';
-import localStorageUtil from '../utils/local-storage/local-storage-util';
+import localStorageUtil from '../utils/local-storage/local-storage.util';
 import SignupValidation from '../utils/signup-validation';
 
 const SignupPage = () => {

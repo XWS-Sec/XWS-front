@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthContext, { unsignedUser } from '../../context/auth-context';
-import localStorageUtil from '../../utils/local-storage/local-storage-util';
+import localStorageUtil from '../../utils/local-storage/local-storage.util';
 import MenuToggleButton from './MenuToggleButton';
 import './navbar-menu-animation.css';
 

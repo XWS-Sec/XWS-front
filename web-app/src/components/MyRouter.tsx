@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -19,6 +20,7 @@ const MyRouter = (props: Props) => {
         />
         <Route path='signup' element={<SignupPage />} />
         <Route path='users/:username' element={<ProfilePage />} />
+        <Route path='follow-requests' element={<FollowRequestsPage />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

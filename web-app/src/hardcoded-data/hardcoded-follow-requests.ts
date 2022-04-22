@@ -1,4 +1,4 @@
-import FollowRequest from '../../model/FollowRequest';
+import FollowRequest from '../model/FollowRequest';
 
 export const hardcodedFollowRequests: FollowRequest[] = [
   {
@@ -10,6 +10,9 @@ export const hardcodedFollowRequests: FollowRequest[] = [
       lastName: 'Iverson',
       profilePictureLocation:
         'https://thespun.com/wp-content/uploads/2019/04/GettyImages-1939608.jpg',
+      profileDescription: '',
+      isFollowedByPrincipal: false,
+      isRequestedByPrincipal: false,
     },
   },
   {
@@ -21,6 +24,9 @@ export const hardcodedFollowRequests: FollowRequest[] = [
       lastName: 'Bryant',
       profilePictureLocation:
         'https://www.billboard.com/wp-content/uploads/media/kobe-bryant-1999-lakers-billboard-650.jpg?w=650',
+      profileDescription: '',
+      isFollowedByPrincipal: true,
+      isRequestedByPrincipal: false,
     },
   },
 ];

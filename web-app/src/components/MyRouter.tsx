@@ -3,7 +3,7 @@ import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import ProfilePage from '../pages/ProfilePage';
+import ProfilePage from '../pages/profile/ProfilePage';
 import SignupPage from '../pages/SignupPage';
 import Navbar from './navbar/Navbar';
 

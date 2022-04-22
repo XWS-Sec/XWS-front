@@ -38,12 +38,12 @@ class LocalStorageUtil {
   //   localStorage.setItem(LocalStorageItem.ACCESS_TOKEN, value);
   // }
 
-  public getUserId(): number {
-    const userIdStr = localStorage.getItem(LocalStorageItem.USER_ID);
-    return userIdStr ? parseInt(userIdStr) : -1;
+  public getUserId(): string {
+    const userId = localStorage.getItem(LocalStorageItem.USER_ID);
+    return userId ? userId : '';
   }
 
-  public setUserId(value: number): void {
+  public setUserId(value: string): void {
     localStorage.setItem(LocalStorageItem.USER_ID, value.toString());
   }
 

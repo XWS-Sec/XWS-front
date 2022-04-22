@@ -4,7 +4,7 @@ import { Role } from '../model/enums/role.enum';
 export interface User {
   //accessToken: string;
   loggedIn: boolean;
-  id: number;
+  id: string;
   username: string;
   role: Role;
 }
@@ -12,7 +12,7 @@ export interface User {
 export const unsignedUser: User = {
   //accessToken: '',
   loggedIn: false,
-  id: -1,
+  id: '',
   username: '',
   role: Role.UNDEFINED,
 };

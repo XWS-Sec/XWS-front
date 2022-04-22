@@ -36,7 +36,7 @@ const LoginPage = () => {
       const user: User = {
         //accessToken: 'fake.access_token.123',
         loggedIn: true,
-        id: 1,
+        id: 'qweqweqwe',
         username: 'fake_user',
         role: Role.USER,
       };

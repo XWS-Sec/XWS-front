@@ -5,7 +5,7 @@ import AuthContext, { unsignedUser } from '../../context/auth-context';
 import FollowRequest from '../../model/FollowRequest';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import FollowRequestItem from './FollowRequestItem';
-import { hardcodedFollowRequests } from './hardcoded-follow-requests';
+import { hardcodedFollowRequests } from '../../hardcoded-data/hardcoded-follow-requests';
 
 const FollowRequests = () => {
   const navigate = useNavigate();

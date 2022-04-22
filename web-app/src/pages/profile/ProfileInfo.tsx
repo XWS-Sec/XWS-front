@@ -174,7 +174,7 @@ const ProfileInfo = (props: {
         incrementPage={incrementFollowingPage}
         fetchingUsers={fetchingFollowing}
       />
-      <div className='flex flex-col bg-gray-100 py-1 px-1 md:py-4 items-center'>
+      <div className='flex flex-col py-1 px-1 md:py-4 items-center'>
         {props.user ? (
           <div className='flex flex-row'>
             <div className='flex flex-col'>

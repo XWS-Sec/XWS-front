@@ -7,7 +7,7 @@ export const hardcodedUser: UserInfoDto = {
   lastName: 'Iverson',
   profilePictureLocation:
     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Iverson_dribbling.jpg/1200px-Iverson_dribbling.jpg',
-  profileDescription: '',
+  profileDescription: 'Former NBA player',
   isFollowedByPrincipal: false,
   isRequestedByPrincipal: false,
 };

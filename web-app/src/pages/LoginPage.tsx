@@ -1,10 +1,10 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { loginRequest } from '../api/login';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import AuthContext, { User } from '../context/auth-context';
-import { Role } from '../model/enums/role.enum';
+import { HttpStatusCode } from '../utils/http-status-code.enum';
 import localStorageUtil from '../utils/local-storage/local-storage.util';
-import { sleep } from '../utils/sleep';
 
 const LoginPage = () => {
   const authContext = useContext(AuthContext);
@@ -27,31 +27,31 @@ const LoginPage = () => {
     setPassword(event.target.value);
   };
 
-  const fakeLogin = async () => {
+  const logIn = async () => {
     setFetching(true);
-    await sleep(1000);
-    setFetching(false);
 
-    if (username === 'fake_user' && password === 'fakepass123') {
-      const user: User = {
-        //accessToken: 'fake.access_token.123',
-        loggedIn: true,
-        id: 'qweqweqwe',
-        username: 'fake_user',
-        role: Role.USER,
-      };
+    const response = await loginRequest(username, password);
 
-      localStorageUtil.setUser(user);
-      authContext.updateAuthContext(user);
-      navigate('');
-    } else {
-      setErrorText('Invalid credentials!');
+    switch (response.status) {
+      case HttpStatusCode.OK:
+        setErrorText('');
+
+        const user = await response.json();
+        user.loggedIn = true;
+
+        localStorageUtil.setUser(user);
+        authContext.updateAuthContext(user);
+        navigate('');
+        break;
+      case HttpStatusCode.UNAUTHORIZED:
+        setErrorText('Invalid credentials.');
+        break;
+      default:
+        alert('Unknown error occured');
+        break;
     }
-  };
 
-  const logIn = () => {
-    fakeLogin();
-    //TODO: implement real login
+    setFetching(false);
   };
 
   const signUp = () => {
@@ -72,7 +72,7 @@ const LoginPage = () => {
       <div className='flex flex-col items-center'>
         <div className='flex flex-col items-center mb-3'>
           <input
-            className='input mb-2 md:text-lg'
+            className='input p-1 mb-2 md:text-lg'
             type='text'
             placeholder='username'
             name='username'
@@ -80,7 +80,7 @@ const LoginPage = () => {
             onKeyDown={onInputKeyDown}
           />
           <input
-            className='input md:text-lg'
+            className='input p-1 md:text-lg'
             type='password'
             placeholder='password'
             onChange={passwordChangeHandler}

@@ -302,7 +302,7 @@ const SignupPage = () => {
         const user: User = {
           loggedIn: true,
           id: data.id,
-          username: data.username,
+          userName: data.username,
           role: data.role,
         };
 

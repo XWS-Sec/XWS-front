@@ -5,7 +5,7 @@ export interface User {
   //accessToken: string;
   loggedIn: boolean;
   id: string;
-  username: string;
+  userName: string;
   role: Role;
 }
 
@@ -13,7 +13,7 @@ export const unsignedUser: User = {
   //accessToken: '',
   loggedIn: false,
   id: '',
-  username: '',
+  userName: '',
   role: Role.UNDEFINED,
 };
 

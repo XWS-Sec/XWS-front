@@ -13,7 +13,7 @@ class LocalStorageUtil {
         //accessToken: accessToken,
         loggedIn: true,
         id: this.getUserId(),
-        username: this.getUsername(),
+        userName: this.getUsername(),
         role: this.getRole(),
       };
 
@@ -26,7 +26,7 @@ class LocalStorageUtil {
   public setUser(user: User): void {
     //this.setAccessToken(user.accessToken);
     this.setUserId(user.id);
-    this.setUsername(user.username);
+    this.setUsername(user.userName);
     this.setRole(user.role);
   }
 

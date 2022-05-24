@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import EmailVerificationPage from '../pages/EmailVerificationPage';
 import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
@@ -19,6 +20,7 @@ const MyRouter = (props: Props) => {
           element={props.loggedIn ? <HomePage /> : <LoginPage />}
         />
         <Route path='signup' element={<SignupPage />} />
+        <Route path='emailVerification' element={<EmailVerificationPage />} />
         <Route path='users/:username' element={<ProfilePage />} />
         <Route path='follow-requests' element={<FollowRequestsPage />} />
         <Route path='*' element={<NotFoundPage />} />

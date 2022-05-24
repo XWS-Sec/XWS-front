@@ -1,5 +1,6 @@
 import { useContext, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { signupRequest } from '../api/signup';
 import ErrorLabel from '../components/common/ErrorLabel';
 import InputWithLabel from '../components/common/InputWithLabel';
 import LoadingSpinner from '../components/common/LoadingSpinner';
@@ -26,8 +27,8 @@ const SignupPage = () => {
 
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
+  const [surname, setSurname] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('01/01/1990');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
@@ -38,8 +39,8 @@ const SignupPage = () => {
 
   const [emailErrorText, setEmailErrorText] = useState('');
   const [usernameErrorText, setUsernameErrorText] = useState('');
-  const [firstNameErrorText, setFirstNameErrorText] = useState('');
-  const [lastNameErrorText, setLastNameErrorText] = useState('');
+  const [nameErrorText, setNameErrorText] = useState('');
+  const [surnameErrorText, setSurnameErrorText] = useState('');
   const [dateOfBirthErrorText, setDateOfBirthErrorText] = useState('');
   const [phoneNumberErrorText, setPhoneNumberErrorText] = useState('');
   const [passwordErrorText, setPasswordErrorText] = useState('');
@@ -82,40 +83,36 @@ const SignupPage = () => {
     }
   };
 
-  const firstNameChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const nameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setFirstName(value);
-    setFirstNameErrorText('');
+    setName(value);
+    setNameErrorText('');
 
     if (!value) {
       return;
     }
 
     try {
-      signupValidation.validateFirstName(value);
-      setFirstNameErrorText('');
+      signupValidation.validateName(value);
+      setNameErrorText('');
     } catch (error: any) {
-      setFirstNameErrorText(error.message);
+      setNameErrorText(error.message);
     }
   };
 
-  const lastNameChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const surnameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setLastName(value);
-    setLastNameErrorText('');
+    setSurname(value);
+    setSurnameErrorText('');
 
     if (!value) {
       return;
     }
 
     try {
-      signupValidation.validateLastName(value);
+      signupValidation.validateSurname(value);
     } catch (error: any) {
-      setLastNameErrorText(error.message);
+      setSurnameErrorText(error.message);
     }
   };
 
@@ -214,10 +211,10 @@ const SignupPage = () => {
       !emailErrorText &&
       username &&
       !usernameErrorText &&
-      firstName &&
-      !firstNameErrorText &&
-      lastName &&
-      !lastNameErrorText &&
+      name &&
+      !nameErrorText &&
+      surname &&
+      !surnameErrorText &&
       dateOfBirth &&
       !dateOfBirthErrorText &&
       phoneNumber &&
@@ -236,13 +233,14 @@ const SignupPage = () => {
         email: email,
         username: username,
         password: password,
-        firstName: firstName,
-        lastName: lastName,
+        confirmPassword: confirmPassword,
+        name: name,
+        surname: surname,
         dateOfBirth: dateOfBirth,
         gender: gender,
         phoneNumber: phoneNumber,
         isPrivate: isPrivate,
-        profileDescription: profileDescription,
+        // profileDescription: profileDescription,
       };
       await register(createUserDto);
     } else {
@@ -251,76 +249,24 @@ const SignupPage = () => {
   };
 
   const register = async (createUserDto: CreateUserDto) => {
-    const url: string = '/api/register';
-
     setFetching(true);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(createUserDto),
-    });
+    const response = await signupRequest(createUserDto);
 
     switch (response.status) {
       case HttpStatusCode.OK:
         setErrorText('');
-        await logIn();
+        navigate('/emailVerification');
         break;
       case HttpStatusCode.BAD_REQUEST:
-        setFetching(false);
         setErrorText('Bad request.');
         break;
       default:
-        setFetching(false);
         setErrorText('Unknown error occurred.');
         break;
     }
-  };
 
-  const logIn = async () => {
-    const url: string = '/api/login';
-    const data = { username: username, password: password };
-
-    setFetching(true);
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    switch (response.status) {
-      case HttpStatusCode.OK:
-        setErrorText('');
-
-        const data = await response.json();
-
-        const user: User = {
-          loggedIn: true,
-          id: data.id,
-          userName: data.username,
-          role: data.role,
-        };
-
-        localStorageUtil.setUser(user);
-        authContext.updateAuthContext(user);
-
-        setFetching(false);
-        navigate('/');
-        break;
-      case HttpStatusCode.BAD_REQUEST:
-        setFetching(false);
-        setErrorText('Invalid credentials.');
-        break;
-      default:
-        setFetching(false);
-        setErrorText('Unknown error occurred.');
-        break;
-    }
+    setFetching(false);
   };
 
   return (
@@ -347,20 +293,20 @@ const SignupPage = () => {
         <InputWithLabel
           type='text'
           text='First name:'
-          name='firstName'
+          name='name'
           placeholder='first name'
-          onChange={firstNameChangeHandler}
+          onChange={nameChangeHandler}
         />
-        <ErrorLabel text={firstNameErrorText} />
+        <ErrorLabel text={nameErrorText} />
 
         <InputWithLabel
           type='text'
-          text='Last name'
-          name='lastName'
-          placeholder='last name'
-          onChange={lastNameChangeHandler}
+          text='Surname'
+          name='surname'
+          placeholder='surname'
+          onChange={surnameChangeHandler}
         />
-        <ErrorLabel text={lastNameErrorText} />
+        <ErrorLabel text={surnameErrorText} />
 
         <div className='flex flex-wrap items-center'>
           <p className='my-1 w-44 whitespace-nowrap'>Date of birth:</p>
@@ -410,7 +356,7 @@ const SignupPage = () => {
         />
         <ErrorLabel text={confirmPasswordErrorText} />
 
-        <div className='flex flex-wrap items-center mb-2'>
+        <div className='flex flex-wrap items-center mb-6'>
           <p className='my-1 w-44 whitespace-nowrap'>Make my profile:</p>
           <select className='input p-1' onChange={isPrivateChangeHandler}>
             <option value='public'>public</option>
@@ -418,7 +364,7 @@ const SignupPage = () => {
           </select>
         </div>
 
-        <div className='flex flex-wrap items-center mb-3'>
+        {/* <div className='flex flex-wrap items-center mb-3'>
           <p className='my-1'>About me:</p>
           <p className='ml-2 text-gray-500'>(optional)</p>
           <textarea
@@ -427,7 +373,7 @@ const SignupPage = () => {
             placeholder='Say something about yourself'
             onChange={profileDescriptionChangeHandler}
           />
-        </div>
+        </div> */}
 
         {fetching ? (
           <div className='flex justify-center pt-3'>

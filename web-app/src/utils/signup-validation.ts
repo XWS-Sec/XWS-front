@@ -7,12 +7,13 @@ import { PasswordsDontMatchError } from '../errors/passwords-dont-match-error';
 import { PhoneNumberRegexError } from '../errors/phone-number-regex-error';
 import { UserImmatureError } from '../errors/user-immature-error';
 import { UsernameRegexError } from '../errors/username-regex-error';
+import { PasswordWeakError } from '../errors/password-weak-error';
 // import { UsernameTakenError } from '../errors/username-taken-error';
 // import { sleep } from '../utils/sleep';
 
 // const USERNAME_CHECK_TIMEOUT = 1500;
 const MIN_USER_AGE = 12;
-const MIN_PASSWORD_LENGTH = 8;
+const MIN_PASSWORD_LENGTH = 6;
 
 export default class SignupValidation {
   // private isEmailTakenLastRequestMoment: number = Date.now();
@@ -127,9 +128,9 @@ export default class SignupValidation {
   };
 
   public validateDateOfBirth = (value: string) => {
-    if (!this.isAtLeastTwelve(value)) {
-      throw new UserImmatureError();
-    }
+    // if (!this.isAtLeastTwelve(value)) {
+    //   throw new UserImmatureError();
+    // }
   };
 
   public validatePhoneNumber = (value: string) => {
@@ -151,6 +152,10 @@ export default class SignupValidation {
   public validatePassword = (value: string) => {
     if (!this.isPasswordLengthValid(value)) {
       throw new PasswordShortError();
+    }
+
+    if (!/\d/.test(value)) {
+      throw new PasswordWeakError();
     }
   };
 

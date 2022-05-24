@@ -58,6 +58,10 @@ const LoginPage = () => {
     navigate('signup');
   };
 
+  const passwordlessLogin = () => {
+    navigate('passwordlessLogin');
+  }
+
   const onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       logIn();
@@ -98,6 +102,9 @@ const LoginPage = () => {
             </p>
             <button className='btnGreenWhite my-2' onClick={logIn}>
               Log in
+            </button>
+            <button className='btnWhiteGreen mb-2' onClick={passwordlessLogin}>
+              Log in passwordless
             </button>
             <button className='btnWhiteGreen' onClick={signUp}>
               Sign up

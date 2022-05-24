@@ -4,6 +4,7 @@ import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
+import PasswordlessLogin from '../pages/PasswordlessLogin';
 import ProfilePage from '../pages/profile/ProfilePage';
 import SignupPage from '../pages/SignupPage';
 import Navbar from './navbar/Navbar';
@@ -20,6 +21,7 @@ const MyRouter = (props: Props) => {
           element={props.loggedIn ? <HomePage /> : <LoginPage />}
         />
         <Route path='signup' element={<SignupPage />} />
+        <Route path='passwordlessLogin' element={<PasswordlessLogin/>}/>
         <Route path='emailVerification' element={<EmailVerificationPage />} />
         <Route path='users/:username' element={<ProfilePage />} />
         <Route path='follow-requests' element={<FollowRequestsPage />} />

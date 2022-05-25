@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { forgotPassword } from '../../api/forgotPassword';
 import { loginRequest } from '../../api/login';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import AuthContext, { User } from '../../context/auth-context';
+import AuthContext from '../../context/auth-context';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import localStorageUtil from '../../utils/local-storage/local-storage.util';
 
@@ -14,11 +13,10 @@ const LoginForm = (props: { changeState: (value: string) => void }) => {
 
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
-	const [email, setEmail] = useState('');
+
 	const [errorText, setErrorText] = useState('');
-	const [successText, setSuccessText] = useState('');
+
 	const [fetching, setFetching] = useState(false);
-	const [loginState, setLoginState] = useState('login');
 
 	const usernameChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setUsername(event.target.value);
@@ -65,6 +63,10 @@ const LoginForm = (props: { changeState: (value: string) => void }) => {
 		}
 	};
 
+	const passwordlessLogin = () => {
+		navigate('passwordlessLogin');
+	};
+
 	return (
 		<div className='flex flex-col items-center'>
 			<div className='flex flex-col items-center mb-3'>
@@ -91,6 +93,9 @@ const LoginForm = (props: { changeState: (value: string) => void }) => {
 					</p>
 					<button className='btnGreenWhite my-2' onClick={logIn}>
 						Log in
+					</button>
+					<button className='btnWhiteGreen mb-2' onClick={passwordlessLogin}>
+						Log in passwordless
 					</button>
 					<button className='btnWhiteGreen' onClick={signUp}>
 						Sign up

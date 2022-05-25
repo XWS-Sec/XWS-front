@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { changePasswordRequest } from '../../api/changePassword';
+import { recoverPasswordRequest } from '../../api/changePassword';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 
@@ -33,7 +33,7 @@ const ChangePasswordForm = (props: { changeState: (value: string) => void; email
 			newConfirmPassword: confirmedPassword,
 		};
 
-		const response = await changePasswordRequest(data);
+		const response = await recoverPasswordRequest(data);
 
 		switch (response.status) {
 			case HttpStatusCode.OK:

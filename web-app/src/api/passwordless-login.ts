@@ -7,3 +7,13 @@ export const passwordlessLogin = async (email: string) => {
 
     return response;
 }
+
+export const getPasswordlessUser =async () => {
+    const url: string = '/api/User'
+
+    const response = await fetch(url,{
+        method: 'GET'
+    })
+
+    return response;
+}

@@ -50,7 +50,7 @@ const PasswordlessLogin = () => {
     
         const response = await passwordlessLogin(email);
         if(response.status == HttpStatusCode.OK)
-            alert("Email sent!");
+            navigate('/emailVerification');
         else if(response.status == HttpStatusCode.BAD_REQUEST)
             setErrorText("Bad request!");
         else

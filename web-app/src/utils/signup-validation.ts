@@ -1,22 +1,23 @@
 import { EmailRegexError } from '../errors/email-regex-error';
-import { EmailTakenError } from '../errors/email-taken-error';
-import { FirstNameRegexError } from '../errors/first-name-regex-error';
-import { LastNameRegexError } from '../errors/last-name-regex-error';
+// import { EmailTakenError } from '../errors/email-taken-error';
+import { NameRegexError } from '../errors/name-regex-error';
+import { SurnameRegexError } from '../errors/surname-regex-error';
 import { PasswordShortError } from '../errors/password-short-error';
 import { PasswordsDontMatchError } from '../errors/passwords-dont-match-error';
 import { PhoneNumberRegexError } from '../errors/phone-number-regex-error';
 import { UserImmatureError } from '../errors/user-immature-error';
 import { UsernameRegexError } from '../errors/username-regex-error';
-import { UsernameTakenError } from '../errors/username-taken-error';
-import { sleep } from '../utils/sleep';
+import { PasswordWeakError } from '../errors/password-weak-error';
+// import { UsernameTakenError } from '../errors/username-taken-error';
+// import { sleep } from '../utils/sleep';
 
-const USERNAME_CHECK_TIMEOUT = 1500;
+// const USERNAME_CHECK_TIMEOUT = 1500;
 const MIN_USER_AGE = 12;
-const MIN_PASSWORD_LENGTH = 8;
+const MIN_PASSWORD_LENGTH = 6;
 
 export default class SignupValidation {
-  private isEmailTakenLastRequestMoment: number = Date.now();
-  private isUsernameTakenLastRequestMoment: number = Date.now();
+  // private isEmailTakenLastRequestMoment: number = Date.now();
+  // private isUsernameTakenLastRequestMoment: number = Date.now();
   private emailRegex: RegExp = new RegExp(
     // eslint-disable-next-line
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
@@ -26,110 +27,110 @@ export default class SignupValidation {
     // eslint-disable-next-line
     /^[^`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~0123456789]+$/
   );
-  private phoneNumberRegex: RegExp = new RegExp(/^\+[0-9]+$/);
+  private phoneNumberRegex: RegExp = new RegExp(/^[0-9]+$/);
 
   public validateEmail = async (value: string) => {
     if (!this.isEmailRegexValid(value)) {
       throw new EmailRegexError();
     }
 
-    await this.isEmailTakenDebounced(value).then((isTaken) => {
-      if (isTaken) {
-        throw new EmailTakenError();
-      }
-    });
+    // await this.isEmailTakenDebounced(value).then((isTaken) => {
+    //   if (isTaken) {
+    //     throw new EmailTakenError();
+    //   }
+    // });
   };
 
   private isEmailRegexValid = (value: string) => {
     return this.emailRegex.test(value);
   };
 
-  private isEmailTaken = async (username: string): Promise<boolean> => {
-    var answer = false;
+  // private isEmailTaken = async (username: string): Promise<boolean> => {
+  //   var answer = false;
 
-    //TODO: send check request
+  //   //TODO: send check request
 
-    return answer;
-  };
+  //   return answer;
+  // };
 
-  private isEmailTakenDebounced = async (value: string): Promise<boolean> => {
-    this.isEmailTakenLastRequestMoment = Date.now();
-    await sleep(USERNAME_CHECK_TIMEOUT);
+  // private isEmailTakenDebounced = async (value: string): Promise<boolean> => {
+  //   this.isEmailTakenLastRequestMoment = Date.now();
+  //   await sleep(USERNAME_CHECK_TIMEOUT);
 
-    if (
-      Date.now() <
-      this.isEmailTakenLastRequestMoment + USERNAME_CHECK_TIMEOUT
-    ) {
-      return true; // cancel check
-    }
+  //   if (
+  //     Date.now() <
+  //     this.isEmailTakenLastRequestMoment + USERNAME_CHECK_TIMEOUT
+  //   ) {
+  //     return true; // cancel check
+  //   }
 
-    return this.isEmailTaken(value);
-  };
+  //   return this.isEmailTaken(value);
+  // };
 
   public validateUsername = async (value: string) => {
     if (!this.isUsernameRegexValid(value)) {
       throw new UsernameRegexError();
     }
 
-    await this.isUsernameTakenDebounced(value).then((isTaken) => {
-      if (isTaken) {
-        throw new UsernameTakenError();
-      }
-    });
+    // await this.isUsernameTakenDebounced(value).then((isTaken) => {
+    //   if (isTaken) {
+    //     throw new UsernameTakenError();
+    //   }
+    // });
   };
 
   private isUsernameRegexValid = (value: string) => {
     return this.usernameRegex.test(value);
   };
 
-  private isUsernameTaken = async (username: string): Promise<boolean> => {
-    var answer = false;
+  // private isUsernameTaken = async (username: string): Promise<boolean> => {
+  //   var answer = false;
 
-    //TODO: send check request
+  //   //TODO: send check request
 
-    return answer;
-  };
+  //   return answer;
+  // };
 
-  private isUsernameTakenDebounced = async (
-    value: string
-  ): Promise<boolean> => {
-    this.isUsernameTakenLastRequestMoment = Date.now();
-    await sleep(USERNAME_CHECK_TIMEOUT);
+  // private isUsernameTakenDebounced = async (
+  //   value: string
+  // ): Promise<boolean> => {
+  //   this.isUsernameTakenLastRequestMoment = Date.now();
+  //   await sleep(USERNAME_CHECK_TIMEOUT);
 
-    if (
-      Date.now() <
-      this.isUsernameTakenLastRequestMoment + USERNAME_CHECK_TIMEOUT
-    ) {
-      return true; // cancel check
+  //   if (
+  //     Date.now() <
+  //     this.isUsernameTakenLastRequestMoment + USERNAME_CHECK_TIMEOUT
+  //   ) {
+  //     return true; // cancel check
+  //   }
+
+  //   return this.isUsernameTaken(value);
+  // };
+
+  public validateName = (value: string) => {
+    if (!this.isNameRegexValid(value)) {
+      throw new NameRegexError();
     }
-
-    return this.isUsernameTaken(value);
   };
 
-  public validateFirstName = (value: string) => {
-    if (!this.isFirstNameRegexValid(value)) {
-      throw new FirstNameRegexError();
-    }
-  };
-
-  private isFirstNameRegexValid = (value: string) => {
+  private isNameRegexValid = (value: string) => {
     return this.noSpecialCharsOrNumbersRegex.test(value);
   };
 
-  public validateLastName = (value: string) => {
-    if (!this.isLastNameRegexValid(value)) {
-      throw new LastNameRegexError();
+  public validateSurname = (value: string) => {
+    if (!this.isSurnameRegexValid(value)) {
+      throw new SurnameRegexError();
     }
   };
 
-  private isLastNameRegexValid = (value: string) => {
+  private isSurnameRegexValid = (value: string) => {
     return this.noSpecialCharsOrNumbersRegex.test(value);
   };
 
   public validateDateOfBirth = (value: string) => {
-    if (!this.isAtLeastTwelve(value)) {
-      throw new UserImmatureError();
-    }
+    // if (!this.isAtLeastTwelve(value)) {
+    //   throw new UserImmatureError();
+    // }
   };
 
   public validatePhoneNumber = (value: string) => {
@@ -151,6 +152,10 @@ export default class SignupValidation {
   public validatePassword = (value: string) => {
     if (!this.isPasswordLengthValid(value)) {
       throw new PasswordShortError();
+    }
+
+    if (!/\d/.test(value)) {
+      throw new PasswordWeakError();
     }
   };
 

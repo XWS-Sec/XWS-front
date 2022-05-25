@@ -1,14 +1,7 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { forgotPassword } from '../api/forgotPassword';
-import { loginRequest } from '../api/login';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useState } from 'react';
 import ChangePasswordForm from '../components/login/ChangePassword';
 import ForgotPassword from '../components/login/ForgotPassword';
 import LoginForm from '../components/login/LoginForm';
-import AuthContext, { User } from '../context/auth-context';
-import { HttpStatusCode } from '../utils/http-status-code.enum';
-import localStorageUtil from '../utils/local-storage/local-storage.util';
 
 const LoginPage = () => {
 	const [loginState, setLoginState] = useState('login');

@@ -1,25 +1,14 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { forgotPassword } from '../../api/forgotPassword';
-import { loginRequest } from '../../api/login';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
-import AuthContext, { User } from '../../context/auth-context';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
-import localStorageUtil from '../../utils/local-storage/local-storage.util';
 
 const ForgotPassword = (props: { changeState: (value: string) => void; passEmail: (email: string) => void }) => {
 	const { changeState, passEmail } = props;
 
-	const authContext = useContext(AuthContext);
-	const navigate = useNavigate();
-
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const [errorText, setErrorText] = useState('');
-	const [successText, setSuccessText] = useState('');
 	const [fetching, setFetching] = useState(false);
-	const [loginState, setLoginState] = useState('login');
 
 	const emailChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(event.target.value);
@@ -71,9 +60,7 @@ const ForgotPassword = (props: { changeState: (value: string) => void; passEmail
 					<p className='text-red-600 text-center text' hidden={!errorText}>
 						{errorText}
 					</p>
-					<p className='text-green-600 text-center text' hidden={!successText}>
-						{successText}
-					</p>
+
 					<button className='btnGreenWhite my-2' onClick={resetPassword}>
 						Request new password
 					</button>

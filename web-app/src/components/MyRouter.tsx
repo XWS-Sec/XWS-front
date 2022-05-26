@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AdminPanel from '../pages/AdminPanel';
 import ChangePasswordPage from '../pages/ChangePasswordPage';
 import EmailVerificationPage from '../pages/EmailVerificationPage';
 import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
@@ -35,6 +36,8 @@ const MyRouter = (props: Props) => {
         <Route path='users/:username' element={<ProfilePage />} />
         <Route path='follow-requests' element={<FollowRequestsPage />} />
         <Route path='*' element={<NotFoundPage />} />
+
+        <Route path='adminPanel' element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>
   );

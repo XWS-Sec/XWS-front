@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { RBACProvider } from 'react-simple-rbac';
 import MyRouter from './components/MyRouter';
 import AuthContext, { User } from './context/auth-context';
 import localStorageUtil from './utils/local-storage/local-storage.util';
@@ -18,7 +19,9 @@ function App() {
           updateAuthContext: updateAuthContext,
         }}
       >
-        <MyRouter loggedIn={user.loggedIn} />
+        <RBACProvider roles={[user.role]}>
+          <MyRouter loggedIn={user.loggedIn} />
+        </RBACProvider>
       </AuthContext.Provider>
     </div>
   );

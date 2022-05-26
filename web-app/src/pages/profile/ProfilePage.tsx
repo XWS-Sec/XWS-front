@@ -7,6 +7,12 @@ import { hardcodedUser } from '../../hardcoded-data/hardcoded-user';
 import PostList from '../../components/posts/PostList';
 import { hardcodedPosts } from '../../hardcoded-data/hardcoded-posts';
 import ProfileTabButton from './ProfileTabButton';
+import {
+  HubConnectionBuilder,
+  HubConnection,
+  HttpTransportType,
+  LogLevel,
+} from '@microsoft/signalr';
 
 enum ProfileTab {
   POSTS,
@@ -21,10 +27,57 @@ const ProfilePage = () => {
   const [userPrivateSectionVisible, setUserPrivateSectionVisible] =
     useState(false);
   const [selectedTab, setSelectedTab] = useState(ProfileTab.POSTS);
+  const [connection, setConnection] = useState<HubConnection>();
+  const [posts, setPosts] = useState<any>();
 
   useEffect(() => {
     setUser(hardcodedUser);
   }, [username]);
+
+  useEffect(() => {
+    const newConnection = new HubConnectionBuilder()
+      .withUrl(`https://localhost:44322/hub`, {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets,
+      })
+      .configureLogging(LogLevel.Information)
+      .withAutomaticReconnect()
+      .build();
+
+    console.log('nc');
+    console.log(newConnection);
+
+    setConnection(newConnection);
+  }, []);
+
+  useEffect(() => {
+    if (connection) {
+      connection.on('Response', handleResponse);
+      connection.on('postsNotification', (x: any) => {
+        console.log(x);
+      });
+      connection.start().then((value) => {
+        console.log('started');
+        connection?.invoke('Connect', user?.id);
+      });
+    }
+  }, [connection]);
+
+  const handleResponse = (message: string) => {
+    getPosts();
+  };
+
+  const getPosts = async () => {
+    const response = await fetch(
+      `/api/Post/0?specificUser=${hardcodedUser.id}`
+    );
+
+    console.log(response);
+  };
+
+  const handlePostsResponse = (response: any[]) => {
+    console.log(response);
+  };
 
   return (
     <div className='flex flex-col flex-grow overflow-y-scroll'>

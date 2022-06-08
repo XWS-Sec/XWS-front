@@ -18,7 +18,9 @@ const PostItem = (props: {
 
   const [isLiked, setIsLiked] = useState(props.post.isLikedByPrincipal);
   const [fetchingLike, setFetchingLike] = useState(false);
-  const [likesCount, setLikesCount] = useState(props.post.likesCount);
+  const [likesCount, setLikesCount] = useState(
+    props.post.likes ? props.post.likes.length : 0
+  );
   const [usersWhoLikedPost, setUsersWhoLikedPost] = useState<UserInfoDto[]>([]);
   const [usersWhoLikedPostPage, setUsersWhoLikedPostPage] = useState(1);
   const [isUsersWhoLikedPostPopupHidden, setIsUsersWhoLikedPostPopupHidden] =
@@ -39,16 +41,12 @@ const PostItem = (props: {
       />
       <div className='flex justify-between'>
         <div className='flex flex-row items-center'>
-          <Link to={props.post.user.username} className='m-2'>
-            <UserImage
-              src={props.post.user.profilePictureLocation}
-              width={50}
-              height={50}
-            />
+          <Link to={props.post.posterId} className='m-2'>
+            <UserImage src={undefined} width={50} height={50} />
           </Link>
           <div>
-            <Link to={props.post.user.username} className='font-bold'>
-              {props.post.user.username}
+            <Link to={props.post.posterId} className='font-bold'>
+              {props.post.posterId}
             </Link>
             <p className='text-xs text-gray-600'>
               {new Date(props.post.dateCreated).toLocaleString(
@@ -91,7 +89,7 @@ const PostItem = (props: {
             {likesCount} likes
           </button>
           <p className='flex-grow  text-right mx-4'>
-            {props.post.commentsCount} comments
+            {props.post.comments.length} comments
           </p>
         </div>
       </div>

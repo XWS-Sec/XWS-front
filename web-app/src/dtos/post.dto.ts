@@ -7,8 +7,9 @@ export default interface PostDto {
   text: string;
   fileLocation: string;
   dateCreated: Date;
-  likesCount: number;
-  commentsCount: number;
+  likes: any[];
+  dislikes: any[];
+  comments: any[];
   isLikedByPrincipal: boolean;
-  user: UserInfoDto;
+  posterId: string;
 }

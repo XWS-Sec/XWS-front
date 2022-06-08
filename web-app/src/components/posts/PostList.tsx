@@ -8,11 +8,11 @@ const PostList = (props: {
   fetching: boolean;
   removePostItem: (postId: number) => void;
   user?: UserInfoDto;
-  postsCount: number;
 }) => {
+  console.log(props.user);
   return (
     <div className='bg-gray-300 min-h-screen pb-16 flex flex-col items-center'>
-      {props.posts.length > 0 || props.fetching ? (
+      {props.posts ? (
         <div className='flex flex-col items-center flex-grow'>
           {props.posts.map((post) => (
             <PostItem
@@ -21,19 +21,15 @@ const PostList = (props: {
               removePostItem={props.removePostItem}
             />
           ))}
-          {props.fetching && (
-            <div className='flex flex-grow mt-14'>
-              <LoadingSpinner />
-            </div>
-          )}
-        </div>
-      ) : (
-        <div>
-          {props.postsCount === 0 && (
+          {!props.posts.length && (
             <div className='flex flex-col items-center bg-gray-100 md:w-500px p-3 rounded-xl mt-10'>
               {props.user?.username} hasn't posted anything yet.
             </div>
           )}
+        </div>
+      ) : (
+        <div className='flex flex-grow mt-14'>
+          <LoadingSpinner />
         </div>
       )}
     </div>

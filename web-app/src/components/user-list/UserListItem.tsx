@@ -28,9 +28,7 @@ const UserListItem = (props: {
         <Link to={props.user.username}>
           <p className='font-bold truncate'>{props.user.username}</p>
         </Link>
-        <p className='truncate'>
-          {props.user.firstName + ' ' + props.user.lastName}
-        </p>
+        <p className='truncate'>{props.user.name + ' ' + props.user.surname}</p>
       </div>
       {props.userListPopupType === UserListPopupType.FOLLOWERS ? (
         <RemoveFollowerButton

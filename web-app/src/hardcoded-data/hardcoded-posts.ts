@@ -9,10 +9,11 @@ export const hardcodedPosts: PostDto[] = [
     text: 'Some status post text',
     fileLocation: '',
     dateCreated: new Date(),
-    likesCount: 0,
-    commentsCount: 0,
+    likes: [],
+    dislikes: [],
+    comments: [],
     isLikedByPrincipal: false,
-    user: hardcodedUser,
+    posterId: hardcodedUser.id,
   },
   {
     id: 'wescoxzcml',
@@ -21,9 +22,10 @@ export const hardcodedPosts: PostDto[] = [
     fileLocation:
       'https://andscape.com/wp-content/uploads/2021/05/GettyImages-3128062-e1621276844472.jpg?w=1500',
     dateCreated: new Date(),
-    likesCount: 0,
-    commentsCount: 0,
+    likes: [],
+    dislikes: [],
+    comments: [],
     isLikedByPrincipal: false,
-    user: hardcodedUser,
+    posterId: hardcodedUser.id,
   },
 ];

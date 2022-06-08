@@ -1,8 +1,8 @@
 export default interface UserInfoDto {
   id: string;
   username: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+  surname: string;
   profilePictureLocation: string;
   profileDescription: string;
   isFollowedByPrincipal: boolean;

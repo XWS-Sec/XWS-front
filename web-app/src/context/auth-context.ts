@@ -1,3 +1,4 @@
+import { HubConnection } from '@microsoft/signalr';
 import React from 'react';
 import { Role } from '../model/enums/role.enum';
 

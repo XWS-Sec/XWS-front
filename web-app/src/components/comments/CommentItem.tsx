@@ -13,15 +13,15 @@ const CommentItem = (props: {
 
   return (
     <div className='flex'>
-      <Link to={user.username} className='m-2 mt-0 flex-2'>
+      <Link to={user.Username} className='m-2 mt-0 flex-2'>
         <UserImage src={user.profilePictureLocation} width={50} height={50} />
       </Link>
       <div className='flex flex-1 justify-between bg-gray-100 mr-2 mb-2 rounded-md'>
         <div className='flex flex-col flex-grow'>
           <div className='text-1xl text-left pl-2 pb-1 break-words leading-5'>
             <div className='flex'>
-              <Link to={user.username}>
-                <p className='font-bold'>{user.username}</p>
+              <Link to={user.Username}>
+                <p className='font-bold'>{user.Username}</p>
               </Link>
             </div>
             {props.comment.text}

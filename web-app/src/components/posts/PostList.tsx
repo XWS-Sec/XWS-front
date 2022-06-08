@@ -9,21 +9,20 @@ const PostList = (props: {
   removePostItem: (postId: number) => void;
   user?: UserInfoDto;
 }) => {
-  console.log(props.user);
   return (
     <div className='bg-gray-300 min-h-screen pb-16 flex flex-col items-center'>
       {props.posts ? (
         <div className='flex flex-col items-center flex-grow'>
           {props.posts.map((post) => (
             <PostItem
-              key={post.id}
+              key={post.Id}
               post={post}
               removePostItem={props.removePostItem}
             />
           ))}
           {!props.posts.length && (
             <div className='flex flex-col items-center bg-gray-100 md:w-500px p-3 rounded-xl mt-10'>
-              {props.user?.username} hasn't posted anything yet.
+              {props.user?.Username} hasn't posted anything yet.
             </div>
           )}
         </div>

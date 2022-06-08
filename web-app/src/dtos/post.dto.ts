@@ -1,15 +1,14 @@
 import { PostType } from './post-type.enum';
-import UserInfoDto from './user-info.dto';
 
 export default interface PostDto {
-  id: string;
+  Id: string;
   postType: PostType;
-  text: string;
+  Text: string;
   fileLocation: string;
-  dateCreated: Date;
-  likes: any[];
-  dislikes: any[];
-  comments: any[];
+  DateCreated: Date;
+  Likes: any[];
+  Dislikes: any[];
+  Comments: any[];
   isLikedByPrincipal: boolean;
-  posterId: string;
+  PosterId: string;
 }

@@ -1,21 +1,14 @@
 import { useEffect, useState } from 'react';
-import ProfileInfo from './ProfileInfo';
-import UserIsPrivateSection from './UserIsPrivateSection';
-import UserInfoDto from '../../dtos/user-info.dto';
 import { useNavigate, useParams } from 'react-router-dom';
-import { hardcodedUser } from '../../hardcoded-data/hardcoded-user';
-import PostList from '../../components/posts/PostList';
-import ProfileTabButton from './ProfileTabButton';
-import {
-  HubConnectionBuilder,
-  HubConnection,
-  HttpTransportType,
-  LogLevel,
-} from '@microsoft/signalr';
-import { getUserInfo } from '../../api/get-user-info';
-import { HttpStatusCode } from '../../utils/http-status-code.enum';
+import { getUserInfoByUsername } from '../../api/get-user-info-by-username';
 import { getUsersPosts } from '../../api/get-users-posts';
+import PostList from '../../components/posts/PostList';
+import UserInfoDto from '../../dtos/user-info.dto';
+import { HttpStatusCode } from '../../utils/http-status-code.enum';
+import ProfileInfo from './ProfileInfo';
+import ProfileTabButton from './ProfileTabButton';
 import UserDoesNotExist from './UserDoesNotExist';
+import UserIsPrivateSection from './UserIsPrivateSection';
 
 enum ProfileTab {
   POSTS,
@@ -32,7 +25,6 @@ const ProfilePage = () => {
   const [userPrivateSectionVisible, setUserPrivateSectionVisible] =
     useState(false);
   const [selectedTab, setSelectedTab] = useState(ProfileTab.POSTS);
-  const [connection, setConnection] = useState<HubConnection>();
   const [posts, setPosts] = useState<any>();
 
   useEffect(() => {
@@ -41,7 +33,7 @@ const ProfilePage = () => {
     }
 
     const fetchUserInfo = async () => {
-      const response = await getUserInfo(username);
+      const response = await getUserInfoByUsername(username);
 
       switch (response.status) {
         case HttpStatusCode.OK:
@@ -60,37 +52,25 @@ const ProfilePage = () => {
   }, [username]);
 
   useEffect(() => {
-    const newConnection = new HubConnectionBuilder()
-      .withUrl(`https://localhost:44322/hub`, {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets,
-      })
-      .configureLogging(LogLevel.Information)
-      .withAutomaticReconnect()
-      .build();
+    const fetchPosts = async () => {
+      if (!user) {
+        return;
+      }
 
-    setConnection(newConnection);
+      const response = await getUsersPosts(user.Id, 0);
+
+      switch (response.status) {
+        case HttpStatusCode.OK:
+          const message = await response.json();
+          setPosts(message.Posts);
+          break;
+        default:
+          alert('Unknown error occurred');
+      }
+    };
+
+    fetchPosts();
   }, [user]);
-
-  useEffect(() => {
-    if (connection) {
-      connection.on('Response', handleResponse);
-      connection.on('postsNotification', handlePostsResponse);
-      connection.start().then((value) => {
-        console.log('Hub connection started.');
-        connection?.invoke('Connect', user?.id);
-      });
-    }
-  }, [connection]);
-
-  const handleResponse = (message: string) => {
-    getUsersPosts(user!.id, 0);
-  };
-
-  const handlePostsResponse = (response: any[]) => {
-    setPosts(response);
-    console.log('posts:', response);
-  };
 
   return (
     <div className='flex flex-col flex-grow overflow-y-scroll'>
@@ -101,7 +81,7 @@ const ProfilePage = () => {
           <>
             <ProfileInfo user={user} setUser={setUser} />
             {userPrivateSectionVisible ? (
-              <UserIsPrivateSection username={user?.username || ''} />
+              <UserIsPrivateSection username={user?.Username || ''} />
             ) : (
               <div className='flex flex-col'>
                 <div className='flex self-center justify-around w-full md:w-614px py-3'>

@@ -61,8 +61,11 @@ const ProfilePage = () => {
 
       switch (response.status) {
         case HttpStatusCode.OK:
-          const message = await response.json();
-          setPosts(message.Posts);
+          const reply = await response.json();
+          setPosts(reply.Posts);
+          break;
+        case HttpStatusCode.BAD_REQUEST:
+          setUserPrivateSectionVisible(true);
           break;
         default:
           alert('Unknown error occurred');

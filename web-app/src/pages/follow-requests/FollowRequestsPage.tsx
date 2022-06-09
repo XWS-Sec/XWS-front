@@ -2,10 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import AuthContext, { unsignedUser } from '../../context/auth-context';
-import FollowRequest from '../../model/FollowRequest';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import FollowRequestItem from './FollowRequestItem';
-import { hardcodedFollowRequests } from '../../hardcoded-data/hardcoded-follow-requests';
 
 const FollowRequests = () => {
   const navigate = useNavigate();
@@ -40,7 +38,7 @@ const FollowRequests = () => {
       {followRequests ? (
         followRequests.map((followRequest) => (
           <FollowRequestItem
-            key={followRequest.id}
+            key={followRequest.Id}
             followRequest={followRequest}
           />
         ))

@@ -6,10 +6,11 @@ import AuthContext, { unsignedUser } from '../../context/auth-context';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 
 const FollowRequestItem = (props: { followRequest: any }) => {
+  const sender = props.followRequest;
+
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
-  const sender = props.followRequest;
   const [fetching, setFetching] = useState(false);
   const [acceptedLabelVisible, setAcceptedLabelVisible] = useState(false);
   const [declinedLabelVisible, setDeclinedLabelVisible] = useState(false);
@@ -17,11 +18,11 @@ const FollowRequestItem = (props: { followRequest: any }) => {
   const accept = () => {
     setFetching(true);
 
-    fetch('/api/friendships/accept/' + props.followRequest.id, {
+    fetch(`/api/Follow/${sender.Id}/true`, {
       method: 'PUT',
     }).then((response) => {
       switch (response.status) {
-        case HttpStatusCode.CREATED:
+        case HttpStatusCode.OK:
           setAcceptedLabelVisible(true);
           break;
         case HttpStatusCode.UNAUTHORIZED:
@@ -40,11 +41,11 @@ const FollowRequestItem = (props: { followRequest: any }) => {
   const decline = () => {
     setFetching(true);
 
-    fetch('/api/friendships/decline/' + props.followRequest.id, {
+    fetch(`/api/Follow/${sender.Id}/false`, {
       method: 'PUT',
     }).then((response) => {
       switch (response.status) {
-        case HttpStatusCode.CREATED:
+        case HttpStatusCode.OK:
           setDeclinedLabelVisible(true);
           break;
         case HttpStatusCode.UNAUTHORIZED:

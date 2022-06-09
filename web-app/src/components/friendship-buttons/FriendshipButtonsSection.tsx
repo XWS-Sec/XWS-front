@@ -15,7 +15,7 @@ import FollowButton from './FollowButton';
 import UnfollowButton from './UnfollowButton';
 
 const FriendshipButtonsSection = (props: {
-  user: UserInfoDto | undefined;
+  user?: UserInfoDto;
   setUser: Dispatch<SetStateAction<UserInfoDto | undefined>>;
 }) => {
   const authContext = useContext(AuthContext);
@@ -43,8 +43,15 @@ const FriendshipButtonsSection = (props: {
 
           setIsFollowedByPrincipal(false);
 
-          //TODO: add check if requested by principal
+          if (
+            message.FollowRequested.find((f: any) => f.Id === props.user!.Id)
+          ) {
+            setIsRequestedByPrincipal(true);
+            break;
+          }
+
           setIsRequestedByPrincipal(false);
+
           break;
         default:
           alert('Unknown error occurred');
@@ -55,27 +62,46 @@ const FriendshipButtonsSection = (props: {
   }, [props.user]);
 
   return (
-    <div>
-      {props.user?.Id !== authContext.user.id && (
-        <div className='flex flex-row justify-center text-sm'>
-          {isFollowedByPrincipal !== undefined &&
-            isRequestedByPrincipal !== undefined &&
-            (isFollowedByPrincipal ? (
-              <UnfollowButton user={props.user} setUser={props.setUser} />
-            ) : isRequestedByPrincipal ? (
-              <CancelRequestButton user={props.user} setUser={props.setUser} />
-            ) : (
-              <FollowButton user={props.user} setUser={props.setUser} />
-            ))}
-          {(isFollowedByPrincipal === undefined ||
-            isRequestedByPrincipal === undefined) && (
-            <div className='flex justify-center w-24'>
-              <LoadingSpinner />
+    <>
+      {props.user && (
+        <>
+          {props.user?.Id !== authContext.user.id && (
+            <div className='flex flex-row justify-center text-sm'>
+              {isFollowedByPrincipal !== undefined &&
+                isRequestedByPrincipal !== undefined &&
+                (isFollowedByPrincipal ? (
+                  <UnfollowButton
+                    userId={props.user.Id}
+                    onUnfollow={() => setIsFollowedByPrincipal(false)}
+                  />
+                ) : isRequestedByPrincipal ? (
+                  <CancelRequestButton
+                    user={props.user}
+                    setUser={props.setUser}
+                  />
+                ) : (
+                  <FollowButton
+                    userId={props.user.Id}
+                    onFollow={(requested: boolean) => {
+                      if (requested) {
+                        setIsRequestedByPrincipal(true);
+                      } else {
+                        setIsFollowedByPrincipal(true);
+                      }
+                    }}
+                  />
+                ))}
+              {(isFollowedByPrincipal === undefined ||
+                isRequestedByPrincipal === undefined) && (
+                <div className='flex justify-center w-24'>
+                  <LoadingSpinner />
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
       )}
-    </div>
+    </>
   );
 };
 

@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { getFollowing } from '../../api/get-following';
+import { getFollowRequest } from '../../api/get-following';
 import AuthContext from '../../context/auth-context';
 import UserInfoDto from '../../dtos/user-info.dto';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
@@ -27,8 +27,8 @@ const FriendshipButtonsSection = (props: {
       return;
     }
 
-    const fetchFollowing = async () => {
-      const response = await getFollowing();
+    const fetchFollow = async () => {
+      const response = await getFollowRequest();
 
       switch (response.status) {
         case HttpStatusCode.OK:
@@ -43,7 +43,7 @@ const FriendshipButtonsSection = (props: {
       }
     };
 
-    fetchFollowing();
+    fetchFollow();
   }, [props.user]);
 
   return (

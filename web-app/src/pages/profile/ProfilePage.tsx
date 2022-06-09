@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getUserInfoByUsername } from '../../api/get-user-info-by-username';
+import { getUserInfoByUsernameRequest } from '../../api/get-user-info-by-username';
 import { getUsersPosts } from '../../api/get-users-posts';
 import PostList from '../../components/posts/PostList';
 import UserInfoDto from '../../dtos/user-info.dto';
@@ -33,7 +33,7 @@ const ProfilePage = () => {
     }
 
     const fetchUserInfo = async () => {
-      const response = await getUserInfoByUsername(username);
+      const response = await getUserInfoByUsernameRequest(username);
 
       switch (response.status) {
         case HttpStatusCode.OK:
@@ -101,7 +101,6 @@ const ProfilePage = () => {
                 {selectedTab === ProfileTab.POSTS && (
                   <PostList
                     posts={posts}
-                    fetching={false}
                     removePostItem={() => {}}
                     user={user}
                   />

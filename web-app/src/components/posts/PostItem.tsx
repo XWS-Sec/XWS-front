@@ -9,7 +9,7 @@ import PostDto from '../../dtos/post.dto';
 import UserInfoDto from '../../dtos/user-info.dto';
 import UserListPopup from '../user-list/UserListPopup';
 import CommentSection from '../comments/CommentSection';
-import { getUserInfoById } from '../../api/get-user-info-by-id';
+import { getUserInfoByIdRequest } from '../../api/get-user-info-by-id';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 
 const PostItem = (props: {
@@ -34,7 +34,7 @@ const PostItem = (props: {
 
   useEffect(() => {
     const fetchPoster = async () => {
-      const response = await getUserInfoById(props.post.PosterId);
+      const response = await getUserInfoByIdRequest(props.post.PosterId);
 
       switch (response.status) {
         case HttpStatusCode.OK:

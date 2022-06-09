@@ -4,8 +4,8 @@ import LoadingSpinner from '../common/LoadingSpinner';
 import PostItem from './PostItem';
 
 const PostList = (props: {
+  isFeed?: boolean;
   posts: PostDto[];
-  fetching: boolean;
   removePostItem: (postId: number) => void;
   user?: UserInfoDto;
 }) => {
@@ -20,7 +20,7 @@ const PostList = (props: {
               removePostItem={props.removePostItem}
             />
           ))}
-          {!props.posts.length && (
+          {!props.isFeed && !props.posts.length && (
             <div className='flex flex-col items-center bg-gray-100 md:w-500px p-3 rounded-xl mt-10'>
               {props.user?.Username} hasn't posted anything yet.
             </div>

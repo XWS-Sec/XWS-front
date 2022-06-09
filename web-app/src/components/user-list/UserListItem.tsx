@@ -17,7 +17,7 @@ const UserListItem = (props: {
 
   return (
     <div className='flex py-2 mx-2 sm:mx-5 pr-3 items-center justify-between border-gray-200 border-b-2'>
-      <Link to={props.user.username}>
+      <Link to={props.user.Username}>
         <UserImage
           src={props.user.profilePictureLocation}
           width={50}
@@ -25,12 +25,10 @@ const UserListItem = (props: {
         />
       </Link>
       <div className='flex flex-col ml-2 flex-grow min-w-0'>
-        <Link to={props.user.username}>
-          <p className='font-bold truncate'>{props.user.username}</p>
+        <Link to={props.user.Username}>
+          <p className='font-bold truncate'>{props.user.Username}</p>
         </Link>
-        <p className='truncate'>
-          {props.user.firstName + ' ' + props.user.lastName}
-        </p>
+        <p className='truncate'>{props.user.Name + ' ' + props.user.Surname}</p>
       </div>
       {props.userListPopupType === UserListPopupType.FOLLOWERS ? (
         <RemoveFollowerButton

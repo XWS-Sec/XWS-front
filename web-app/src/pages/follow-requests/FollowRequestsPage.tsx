@@ -11,17 +11,16 @@ const FollowRequests = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
-  const [followRequests, setFollowRequests] = useState<FollowRequest[]>();
+  const [followRequests, setFollowRequests] = useState<any[]>();
 
   useEffect(() => {
     const fetchFollowRequests = async () => {
-      const response = await fetch('/api/friendships/requests');
+      const response = await fetch('/api/follow');
 
       switch (response.status) {
         case HttpStatusCode.OK:
-          // const data = await response.json();
-          // setFollowRequests(data);
-          setFollowRequests(hardcodedFollowRequests);
+          const message = await response.json();
+          setFollowRequests(message.FollowRequests);
           break;
         case HttpStatusCode.UNAUTHORIZED:
           localStorage.clear();

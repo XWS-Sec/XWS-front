@@ -9,7 +9,7 @@ const FollowRequestItem = (props: { followRequest: any }) => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
-  const sender = props.followRequest.sender;
+  const sender = props.followRequest;
   const [fetching, setFetching] = useState(false);
   const [acceptedLabelVisible, setAcceptedLabelVisible] = useState(false);
   const [declinedLabelVisible, setDeclinedLabelVisible] = useState(false);
@@ -18,7 +18,7 @@ const FollowRequestItem = (props: { followRequest: any }) => {
     setFetching(true);
 
     fetch('/api/friendships/accept/' + props.followRequest.id, {
-      method: 'POST',
+      method: 'PUT',
     }).then((response) => {
       switch (response.status) {
         case HttpStatusCode.CREATED:
@@ -41,7 +41,7 @@ const FollowRequestItem = (props: { followRequest: any }) => {
     setFetching(true);
 
     fetch('/api/friendships/decline/' + props.followRequest.id, {
-      method: 'POST',
+      method: 'PUT',
     }).then((response) => {
       switch (response.status) {
         case HttpStatusCode.CREATED:
@@ -63,7 +63,7 @@ const FollowRequestItem = (props: { followRequest: any }) => {
   return (
     <div className='flex md:flex-row flex-col px-4 py-3 mb-4 md:w-500px w-full items-center justify-between bg-white rounded shadow-lg'>
       <div className='flex mb-3 md:mb-0 items-center'>
-        <Link to={`/users/${sender.username}`}>
+        <Link to={`/users/${sender.Username}`}>
           <UserImage
             src={sender.profilePictureLocation}
             width={50}
@@ -71,15 +71,15 @@ const FollowRequestItem = (props: { followRequest: any }) => {
           />
         </Link>
         <div className='flex flex-col ml-2 flex-grow min-w-0'>
-          <Link to={`/users/${sender.username}`}>
-            <p className='font-bold truncate'>{sender.username}</p>
+          <Link to={`/users/${sender.Username}`}>
+            <p className='font-bold truncate'>{sender.Username}</p>
           </Link>
-          <p className='truncate'>{sender.firstName + ' ' + sender.lastName}</p>
+          <p className='truncate'>{sender.Name + ' ' + sender.Surname}</p>
         </div>
       </div>
       {acceptedLabelVisible ? (
         <p className='text-green-600'>
-          {sender.username + ' is now following you'}
+          {sender.Username + ' is now following you'}
         </p>
       ) : declinedLabelVisible ? (
         <p className='text-green-600'>Follow request declined</p>

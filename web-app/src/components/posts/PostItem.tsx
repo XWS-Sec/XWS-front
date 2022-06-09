@@ -62,11 +62,11 @@ const PostItem = (props: {
       <div className='flex justify-between'>
         {poster && (
           <div className='flex flex-row items-center'>
-            <Link to={poster.Username} className='m-2'>
+            <Link to={`/users/${poster.Username}`} className='m-2'>
               <UserImage src={undefined} width={50} height={50} />
             </Link>
             <div>
-              <Link to={poster.Username} className='font-bold'>
+              <Link to={`/users/${poster.Username}`} className='font-bold'>
                 {poster.Username}
               </Link>
               <p className='text-xs text-gray-600'>

@@ -22,7 +22,7 @@ const PostItem = (props: {
   const [isLiked, setIsLiked] = useState(props.post.isLikedByPrincipal);
   const [fetchingLike, setFetchingLike] = useState(false);
   const [likesCount, setLikesCount] = useState(
-    props.post.Likes ? props.post.Likes.length : 0
+    props.post.Liked ? props.post.Liked.length : 0
   );
   const [usersWhoLikedPost, setUsersWhoLikedPost] = useState<UserInfoDto[]>([]);
   const [usersWhoLikedPostPage, setUsersWhoLikedPostPage] = useState(1);

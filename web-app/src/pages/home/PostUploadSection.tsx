@@ -59,43 +59,45 @@ const PostUploadSection = (props: {
     setFileNameText('');
   };
 
-  const createPost = () => {
+  const createPost = async () => {
     if (!errorText) {
       let url = '/api/post';
       let body = new FormData();
-      body.append('text', postText);
+      body.append('Text', postText);
       const file: File = fileInput.current!.files![0];
-      body.append('picture', file);
-      body.append('removePicture', 'false');
+      body.append('RemovedPicture', 'false');
+      body.append('Picture', file);
 
       setFetching(true);
 
-      fetch(url, {
+      const response = await fetch(url, {
         method: 'POST',
         body: body,
-      }).then((response) => {
-        switch (response.status) {
-          case HttpStatusCode.OK:
-            setFetching(false);
-            setPostText('');
-            postTextTextArea.current!.value = ''; // because text area doesn't re-render when value is changed via setPostText
-            removeCurrentFile();
-            response.json().then((value) => props.appendPostItem(value));
-            break;
-          case HttpStatusCode.BAD_REQUEST:
-            response.json().then((value) => setErrorText(value.message));
-            break;
-          case HttpStatusCode.UNAUTHORIZED:
-            localStorage.clear();
-            navigate('/');
-            authContext.updateAuthContext(unsignedUser);
-            break;
-          default:
-            setErrorText('Unknown error occurred');
-        }
-
-        setFetching(false);
       });
+
+      switch (response.status) {
+        case HttpStatusCode.OK:
+          setFetching(false);
+          setPostText('');
+          postTextTextArea.current!.value = ''; // because text area doesn't re-render when value is changed via setPostText
+          removeCurrentFile();
+          const reply = await response.json();
+          const post = JSON.parse(reply.Message);
+          props.appendPostItem(post);
+          break;
+        case HttpStatusCode.BAD_REQUEST:
+          response.json().then((value) => setErrorText('Bad request'));
+          break;
+        case HttpStatusCode.UNAUTHORIZED:
+          localStorage.clear();
+          navigate('/');
+          authContext.updateAuthContext(unsignedUser);
+          break;
+        default:
+          setErrorText('Unknown error occurred');
+      }
+
+      setFetching(false);
     }
   };
 

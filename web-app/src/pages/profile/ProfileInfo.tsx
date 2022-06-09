@@ -43,7 +43,7 @@ const ProfileInfo = (props: {
     setFetchingFollowers(true);
 
     const response = await fetch(
-      '/api/users/followers?userId=' + props.user?.id + '&page=' + followersPage
+      '/api/users/followers?userId=' + props.user?.Id + '&page=' + followersPage
     );
 
     setFetchingFollowers(false);
@@ -63,13 +63,13 @@ const ProfileInfo = (props: {
         navigate('/');
         authContext.updateAuthContext(unsignedUser);
     }
-  }, [authContext, followersPage, navigate, props.user?.id]);
+  }, [authContext, followersPage, navigate, props.user?.Id]);
 
   const fetchFollowing = useCallback(async () => {
     setFetchingFollowing(true);
 
     const response = await fetch(
-      '/api/users/following?userId=' + props.user?.id + '&page=' + followingPage
+      '/api/users/following?userId=' + props.user?.Id + '&page=' + followingPage
     );
 
     setFetchingFollowing(false);
@@ -89,7 +89,7 @@ const ProfileInfo = (props: {
         navigate('/');
         authContext.updateAuthContext(unsignedUser);
     }
-  }, [authContext, followingPage, navigate, props.user?.id]);
+  }, [authContext, followingPage, navigate, props.user?.Id]);
 
   useEffect(() => {
     setFollowers([]);
@@ -147,7 +147,7 @@ const ProfileInfo = (props: {
   };
 
   const removeFollower = (followerId: string) => {
-    setFollowers(followers.filter((follower) => follower.id !== followerId));
+    setFollowers(followers.filter((follower) => follower.Id !== followerId));
   };
 
   return (
@@ -160,7 +160,7 @@ const ProfileInfo = (props: {
         incrementPage={incrementFollowersPage}
         fetchingUsers={fetchingFollowers}
         userListPopupType={
-          props.user?.id === authContext.user.id
+          props.user?.Id === authContext.user.id
             ? UserListPopupType.FOLLOWERS
             : UserListPopupType.REGULAR
         }
@@ -178,7 +178,7 @@ const ProfileInfo = (props: {
         {props.user ? (
           <div className='flex flex-row'>
             <div className='flex flex-col'>
-              {props.user.id + '' === authContext.user.id + '' ? (
+              {props.user.Id + '' === authContext.user.id + '' ? (
                 <ProfilePicture user={props.user} />
               ) : (
                 <UserImage
@@ -196,7 +196,7 @@ const ProfileInfo = (props: {
             </div>
             <div className='w-full md:w-500px md:ml-20'>
               <p className='text-xl md:text-2xl text-center md:text-left mt-2 md:ml-2'>
-                {props.user.username}
+                {props.user.Username}
               </p>
               <CountInfoSection
                 postsCount={120}

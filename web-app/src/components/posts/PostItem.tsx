@@ -11,6 +11,7 @@ import UserListPopup from '../user-list/UserListPopup';
 import CommentSection from '../comments/CommentSection';
 import { getUserInfoByIdRequest } from '../../api/get-user-info-by-id';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
+import Linkify from 'react-linkify';
 
 const PostItem = (props: {
   post: PostDto;
@@ -48,6 +49,12 @@ const PostItem = (props: {
 
     fetchPoster();
   }, [props.post]);
+
+  const componentDecorator = (href: any, text: any, key: any) => (
+    <a href={href} key={key} target='_blank' className='text-blue-800'>
+      {text}
+    </a>
+  );
 
   return (
     <div className='bg-white mt-5 w-screen md:w-614px rounded shadow-lg'>
@@ -91,7 +98,11 @@ const PostItem = (props: {
         {/* )} */}
       </div>
       <div>
-        <p className='text-left mx-4 mb-1 leading-5'>{props.post.Text}</p>
+        <p className='text-left mx-4 mb-1 leading-5'>
+          <Linkify componentDecorator={componentDecorator}>
+            {props.post.Text}
+          </Linkify>
+        </p>
       </div>
       <div>
         <div className='flex flex-row items-center mb-1'>

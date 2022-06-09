@@ -61,7 +61,7 @@ const PostUploadSection = (props: {
 
   const createPost = async () => {
     if (!errorText) {
-      let url = '/api/post';
+      let url = '/api/Post';
       let body = new FormData();
       body.append('Text', postText);
       const file: File = fileInput.current!.files![0];

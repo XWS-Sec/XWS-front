@@ -19,7 +19,7 @@ const PostItem = (props: {
   const locale = 'en-US'; // TODO: get from local storage or cookie
 
   const [poster, setPoster] = useState<UserInfoDto>();
-  const [isLiked, setIsLiked] = useState(props.post.isLikedByPrincipal);
+  const [isLiked, setIsLiked] = useState(false);
   const [fetchingLike, setFetchingLike] = useState(false);
   const [likesCount, setLikesCount] = useState(
     props.post.Liked ? props.post.Liked.length : 0
@@ -86,14 +86,9 @@ const PostItem = (props: {
         </div>
       </div>
       <div className='flex flex-col items-center bg-black mb-1'>
-        {props.post.postType === PostType.PHOTO && (
-          <img src={props.post.fileLocation} alt='' />
-        )}
-        {props.post.postType === PostType.VIDEO && (
-          <video controls>
-            <source src={props.post.fileLocation} type='video/mp4' />
-          </video>
-        )}
+        {/* TODO: uncomment once HasPicture is available on frontend {props.post.HasPicture && ( */}
+        <img src={`/api/PostPicture/${props.post.Id}`} alt='' />
+        {/* )} */}
       </div>
       <div>
         <p className='text-left mx-4 mb-1 leading-5'>{props.post.Text}</p>

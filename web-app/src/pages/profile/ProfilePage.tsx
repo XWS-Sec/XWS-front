@@ -53,7 +53,6 @@ const ProfilePage = () => {
                 posts={hardcodedPosts}
                 fetching={false}
                 removePostItem={() => {}}
-                postsCount={hardcodedPosts.length}
               />
             )}
             {selectedTab === ProfileTab.EXPERIENCE && <div>Experience</div>}

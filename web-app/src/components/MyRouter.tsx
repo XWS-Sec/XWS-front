@@ -3,7 +3,7 @@ import AdminPanel from '../pages/AdminPanel';
 import ChangePasswordPage from '../pages/ChangePasswordPage';
 import EmailVerificationPage from '../pages/EmailVerificationPage';
 import FollowRequestsPage from '../pages/follow-requests/FollowRequestsPage';
-import HomePage from '../pages/HomePage';
+import HomePage from '../pages/home/HomePage';
 import LoggedInPage from '../pages/LoggedInPage';
 import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';

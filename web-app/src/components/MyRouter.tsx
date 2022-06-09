@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AdminPanel from '../pages/AdminPanel';
 import ChangePasswordPage from '../pages/ChangePasswordPage';
@@ -10,15 +11,18 @@ import NotFoundPage from '../pages/NotFoundPage';
 import PasswordlessEmailSentPage from '../pages/PasswordlessEmailSentPage';
 import PasswordlessLogin from '../pages/PasswordlessLogin';
 import ProfilePage from '../pages/profile/ProfilePage';
+import SearchUsersPage from '../pages/SearchUsersPage';
 import SignupPage from '../pages/SignupPage';
 import Navbar from './navbar/Navbar';
 
 type Props = { loggedIn: boolean };
 
 const MyRouter = (props: Props) => {
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
   return (
     <BrowserRouter>
-      <Navbar />
+      <Navbar nameInputRef={nameInputRef} />
       <Routes>
         <Route
           path='/'
@@ -32,6 +36,10 @@ const MyRouter = (props: Props) => {
         <Route
           path='passwordlessEmailSentPage'
           element={<PasswordlessEmailSentPage />}
+        />
+        <Route
+          path='/searchUsers'
+          element={<SearchUsersPage nameInputRef={nameInputRef} />}
         />
         <Route path='users/:username' element={<ProfilePage />} />
         <Route path='follow-requests' element={<FollowRequestsPage />} />

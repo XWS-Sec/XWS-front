@@ -13,6 +13,7 @@ const Menu = (props: { toggleMenu: () => void }) => {
 		const menuLinks = [
 			{ text: 'Home', pathname: '/' },
 			{ text: 'Profile', pathname: `users/${authContext.user.userName}` },
+			{ text: 'Edit profile', pathname: `users/${authContext.user.userName}/edit` },
 			{ text: 'Change password', pathname: `changePassword` },
 		];
 

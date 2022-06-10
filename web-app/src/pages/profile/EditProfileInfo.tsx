@@ -26,7 +26,6 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 	const signupValidation = new SignupValidation();
 
 	const { user } = props;
-	console.log(user);
 
 	// SignupValidation.validateEmail(value: string) and SignupValidation.validateUsername(value: string) use debounce, so we need refs
 	const validateEmailRef = useRef((value: string) => signupValidation.validateEmail(value));
@@ -37,7 +36,11 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 	const [username, setUsername] = useState(user.userName);
 	const [name, setName] = useState(user.name);
 	const [surname, setSurname] = useState(user.surname);
-	const [dateOfBirth, setDateOfBirth] = useState(user.dateOfBirth);
+
+	const [biography, setBiography] = useState(user.biography);
+	const date = !!user.dateOfBirth ? user.dateOfBirth.slice(0, 10) : '2022-10-10';
+
+	const [dateOfBirth, setDateOfBirth] = useState(date);
 	const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
 
 	const [isPrivate, setIsPrivate] = useState(user.isPrivate);
@@ -122,6 +125,8 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 
 	const dateOfBirthChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
+		console.log(value);
+
 		setDateOfBirth(value);
 		setDateOfBirthErrorText('');
 
@@ -160,6 +165,9 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 	const isPrivateChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		setIsPrivate(event.target.value === 'private');
 	};
+	const biographyChangeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+		setBiography(event.target.value);
+	};
 
 	const isInputValid = () => {
 		return email && !emailErrorText && username && !usernameErrorText && name && !nameErrorText && surname && !surnameErrorText && dateOfBirth && !dateOfBirthErrorText && phoneNumber && !phoneNumberErrorText && !passwordErrorText && !confirmPasswordErrorText;
@@ -177,6 +185,7 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 				gender: gender,
 				phoneNumber: phoneNumber,
 				isPrivate: isPrivate,
+				biography: biography,
 				// profileDescription: profileDescription,
 			};
 			await updateData(createUserDto);
@@ -246,6 +255,10 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 						<option value='public'>public</option>
 						<option value='private'>private</option>
 					</select>
+				</div>
+				<div className='flex flex-wrap items-center mb-6'>
+					<p className='my-1 w-44 whitespace-nowrap'>Biography:</p>
+					<textarea value={biography} className='input flex-grow md:w-60 md:text-lg' onChange={biographyChangeHandler} />
 				</div>
 
 				{fetching ? (

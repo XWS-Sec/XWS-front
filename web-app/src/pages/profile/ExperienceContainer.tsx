@@ -89,7 +89,8 @@ const ExperienceContainer = () => {
 
 		const resp = await addExperienceAsync(data);
 		if (resp.status === HttpStatusCode.OK) {
-			setExperiences([...experiences, data]);
+			// setExperiences([...experiences, data]);
+			getUserInfo();
 			setNewExperienceContainerVisible(false);
 			setFetching(false);
 		}
@@ -102,7 +103,8 @@ const ExperienceContainer = () => {
 		};
 		const resp = await deleteExperienceAsync(data);
 		if (resp.status == HttpStatusCode.OK) {
-			setExperiences(experiences.filter((e: any) => e.title !== experience.title && e.startDateTime !== experience.startDateTime));
+			// setExperiences(experiences.filter((e: any) => e.title !== experience.title && e.startDateTime !== experience.startDateTime));
+			getUserInfo();
 		}
 	};
 

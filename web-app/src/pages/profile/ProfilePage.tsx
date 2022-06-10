@@ -8,6 +8,7 @@ import PostList from '../../components/posts/PostList';
 import { hardcodedPosts } from '../../hardcoded-data/hardcoded-posts';
 import ProfileTabButton from './ProfileTabButton';
 import SkillsContainer from './SkillsCointainer';
+import ExperienceContainer from './ExperienceContainer';
 
 enum ProfileTab {
 	POSTS,
@@ -40,7 +41,7 @@ const ProfilePage = () => {
 							<ProfileTabButton tabName='Skills' onClick={() => setSelectedTab(ProfileTab.SKILLS)} />
 						</div>
 						{selectedTab === ProfileTab.POSTS && <PostList posts={hardcodedPosts} fetching={false} removePostItem={() => {}} postsCount={hardcodedPosts.length} />}
-						{selectedTab === ProfileTab.EXPERIENCE && <div>Experience</div>}
+						{selectedTab === ProfileTab.EXPERIENCE && <ExperienceContainer />}
 						{selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
 					</div>
 				)}

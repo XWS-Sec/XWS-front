@@ -164,6 +164,50 @@ export const updateInterestsAsync = async (data: any): Promise<httpResponse> => 
 			};
 		});
 };
+export const addExperienceAsync = async (data: any): Promise<httpResponse> => {
+	const options: any = {
+		method: 'POST',
+		url: `/api/milestone`,
+		data: data,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
+export const deleteExperienceAsync = async (data: any): Promise<httpResponse> => {
+	const options: any = {
+		method: 'DELETE',
+		url: `/api/milestone`,
+		data: data,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
 
 export const getUserSkillsAsync = async (): Promise<httpResponse> => {
 	const options: any = {

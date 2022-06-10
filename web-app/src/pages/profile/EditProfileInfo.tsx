@@ -144,6 +144,7 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 	const genderChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const valueStr = event.target.value;
 		setGender(valueStr as Gender);
+		console.log(valueStr as Gender);
 	};
 
 	const phoneNumberChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -196,6 +197,8 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 
 	const updateData = async (createUserDto: CreateUserDto) => {
 		setFetching(true);
+		console.log(createUserDto);
+		// return;
 
 		const response = await updateUserInfoAsync(createUserDto);
 
@@ -214,6 +217,7 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 
 		setFetching(false);
 	};
+	// console.log(user);
 
 	return (
 		<div className='flex flex-col items-center md:h-screen bg-gray-200 overflow-y-auto'>
@@ -239,7 +243,7 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 
 				<div className='flex flex-wrap items-center mb-2'>
 					<p className='my-1 w-44 whitespace-nowrap'>Gender:</p>
-					<select className='input p-1' onChange={genderChangeHandler}>
+					<select className='input p-1' onChange={genderChangeHandler} value={gender}>
 						<option value='Male'>male</option>
 						<option value='Female'>female</option>
 						<option value='Other'>other</option>
@@ -251,7 +255,7 @@ const EditProfileInfo = (props: { user: any; setUser: Dispatch<SetStateAction<Us
 
 				<div className='flex flex-wrap items-center mb-6'>
 					<p className='my-1 w-44 whitespace-nowrap'>Make my profile:</p>
-					<select className='input p-1' onChange={isPrivateChangeHandler}>
+					<select className='input p-1' onChange={isPrivateChangeHandler} value={isPrivate}>
 						<option value='public'>public</option>
 						<option value='private'>private</option>
 					</select>

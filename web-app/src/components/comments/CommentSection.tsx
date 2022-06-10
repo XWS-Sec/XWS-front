@@ -4,10 +4,14 @@ import { useState } from 'react';
 import LoadingSpinner from '../common/LoadingSpinner';
 import CommentDto from '../../dtos/comment.dto';
 
-const CommentSection = (props: { postId: string }) => {
-  const [comments, setComments] = useState<CommentDto[]>([]);
+const CommentSection = (props: { postId: string; comments: any }) => {
+  const [comments, setComments] = useState<any>(props.comments);
   const [page, setPage] = useState(1);
   const [fetching, setFetching] = useState(false);
+
+  const appendComment = (comment: any) => {
+    setComments([...comments!, comment]);
+  };
 
   return (
     <div className='bg-gray-200 pt-2'>
@@ -24,21 +28,7 @@ const CommentSection = (props: { postId: string }) => {
           <LoadingSpinner />
         </div>
       )}
-      <div className='flex items-center justify-center h-8'>
-        {fetching ? (
-          <div className='flex justify-center'>
-            <LoadingSpinner />
-          </div>
-        ) : (
-          <button
-            className='btnWhiteGreen text-sm'
-            onClick={() => setPage(page + 1)}
-          >
-            Load more comments
-          </button>
-        )}
-      </div>
-      <NewComment postId={props.postId} appendComment={() => {}} />
+      <NewComment postId={props.postId} appendComment={appendComment} />
     </div>
   );
 };

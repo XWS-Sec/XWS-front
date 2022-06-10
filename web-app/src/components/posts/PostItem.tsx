@@ -121,7 +121,7 @@ const PostItem = (props: {
           </p>
         </div>
       </div>
-      <CommentSection postId={props.post.Id} />
+      <CommentSection postId={props.post.Id} comments={props.post.Comments} />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import Menu from './Menu';
 import MenuToggleButton from './MenuToggleButton';
 import Searchbar from './Searchbar';
 
-const Navbar = () => {
+const Navbar = (props: { nameInputRef: React.RefObject<HTMLInputElement> }) => {
   const authContext = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -23,7 +23,7 @@ const Navbar = () => {
         {authContext.user.loggedIn ? (
           <div className='flex flex-grow items-center'>
             <div className='flex flex-grow justify-center items-center'>
-              <Searchbar />
+              <Searchbar nameInputRef={props.nameInputRef} />
             </div>
             <div className='flex justify-center items-center md:ml-12'>
               <MenuToggleButton toggleMenu={toggleMenu} />

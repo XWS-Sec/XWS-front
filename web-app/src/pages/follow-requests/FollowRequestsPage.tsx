@@ -2,26 +2,23 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
 import AuthContext, { unsignedUser } from '../../context/auth-context';
-import FollowRequest from '../../model/FollowRequest';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import FollowRequestItem from './FollowRequestItem';
-import { hardcodedFollowRequests } from '../../hardcoded-data/hardcoded-follow-requests';
 
 const FollowRequests = () => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
 
-  const [followRequests, setFollowRequests] = useState<FollowRequest[]>();
+  const [followRequests, setFollowRequests] = useState<any[]>();
 
   useEffect(() => {
     const fetchFollowRequests = async () => {
-      const response = await fetch('/api/friendships/requests');
+      const response = await fetch('/api/follow');
 
       switch (response.status) {
         case HttpStatusCode.OK:
-          // const data = await response.json();
-          // setFollowRequests(data);
-          setFollowRequests(hardcodedFollowRequests);
+          const message = await response.json();
+          setFollowRequests(message.FollowRequests);
           break;
         case HttpStatusCode.UNAUTHORIZED:
           localStorage.clear();
@@ -41,7 +38,7 @@ const FollowRequests = () => {
       {followRequests ? (
         followRequests.map((followRequest) => (
           <FollowRequestItem
-            key={followRequest.id}
+            key={followRequest.Id}
             followRequest={followRequest}
           />
         ))

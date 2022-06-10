@@ -35,7 +35,7 @@ const UserListPopup = (props: {
               {props.users &&
                 props.users.map((user) => (
                   <UserListItem
-                    key={user.id}
+                    key={user.Id}
                     user={user}
                     userListPopupType={props.userListPopupType}
                     removeUser={props.removeUser}

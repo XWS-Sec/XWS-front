@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { dateTimeFormatOptions } from '../../utils/date-time-format-options';
 import UserImage from '../common/UserImage';
 import LikeButton from '../like/LikeButton';
@@ -9,6 +9,9 @@ import PostDto from '../../dtos/post.dto';
 import UserInfoDto from '../../dtos/user-info.dto';
 import UserListPopup from '../user-list/UserListPopup';
 import CommentSection from '../comments/CommentSection';
+import { getUserInfoByIdRequest } from '../../api/get-user-info-by-id';
+import { HttpStatusCode } from '../../utils/http-status-code.enum';
+import Linkify from 'react-linkify';
 
 const PostItem = (props: {
   post: PostDto;
@@ -16,9 +19,12 @@ const PostItem = (props: {
 }) => {
   const locale = 'en-US'; // TODO: get from local storage or cookie
 
-  const [isLiked, setIsLiked] = useState(props.post.isLikedByPrincipal);
+  const [poster, setPoster] = useState<UserInfoDto>();
+  const [isLiked, setIsLiked] = useState(false);
   const [fetchingLike, setFetchingLike] = useState(false);
-  const [likesCount, setLikesCount] = useState(props.post.likesCount);
+  const [likesCount, setLikesCount] = useState(
+    props.post.Liked ? props.post.Liked.length : 0
+  );
   const [usersWhoLikedPost, setUsersWhoLikedPost] = useState<UserInfoDto[]>([]);
   const [usersWhoLikedPostPage, setUsersWhoLikedPostPage] = useState(1);
   const [isUsersWhoLikedPostPopupHidden, setIsUsersWhoLikedPostPopupHidden] =
@@ -26,6 +32,29 @@ const PostItem = (props: {
   const [fetchingUsersWhoLikedPost, setFetchingUsersWhoLikedPost] =
     useState(false);
   const [reachedLastPage, setReachedLastPage] = useState(false);
+
+  useEffect(() => {
+    const fetchPoster = async () => {
+      const response = await getUserInfoByIdRequest(props.post.PosterId);
+
+      switch (response.status) {
+        case HttpStatusCode.OK:
+          const poster = await response.json();
+          setPoster(poster);
+          break;
+        default:
+          alert('Unknown error occurred');
+      }
+    };
+
+    fetchPoster();
+  }, [props.post]);
+
+  const componentDecorator = (href: any, text: any, key: any) => (
+    <a href={href} key={key} target='_blank' className='text-blue-800'>
+      {text}
+    </a>
+  );
 
   return (
     <div className='bg-white mt-5 w-screen md:w-614px rounded shadow-lg'>
@@ -38,26 +67,24 @@ const PostItem = (props: {
         fetchingUsers={fetchingUsersWhoLikedPost}
       />
       <div className='flex justify-between'>
-        <div className='flex flex-row items-center'>
-          <Link to={props.post.user.username} className='m-2'>
-            <UserImage
-              src={props.post.user.profilePictureLocation}
-              width={50}
-              height={50}
-            />
-          </Link>
-          <div>
-            <Link to={props.post.user.username} className='font-bold'>
-              {props.post.user.username}
+        {poster && (
+          <div className='flex flex-row items-center'>
+            <Link to={`/users/${poster.Username}`} className='m-2'>
+              <UserImage src={undefined} width={50} height={50} />
             </Link>
-            <p className='text-xs text-gray-600'>
-              {new Date(props.post.dateCreated).toLocaleString(
-                locale,
-                dateTimeFormatOptions
-              )}
-            </p>
+            <div>
+              <Link to={`/users/${poster.Username}`} className='font-bold'>
+                {poster.Username}
+              </Link>
+              <p className='text-xs text-gray-600'>
+                {new Date(props.post.DateCreated).toLocaleString(
+                  locale,
+                  dateTimeFormatOptions
+                )}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
         <div className='mt-4'>
           <PostActionsButton
             post={props.post}
@@ -66,17 +93,16 @@ const PostItem = (props: {
         </div>
       </div>
       <div className='flex flex-col items-center bg-black mb-1'>
-        {props.post.postType === PostType.PHOTO && (
-          <img src={props.post.fileLocation} alt='' />
-        )}
-        {props.post.postType === PostType.VIDEO && (
-          <video controls>
-            <source src={props.post.fileLocation} type='video/mp4' />
-          </video>
-        )}
+        {/* TODO: uncomment once HasPicture is available on frontend {props.post.HasPicture && ( */}
+        <img src={`/api/PostPicture/${props.post.Id}`} alt='' />
+        {/* )} */}
       </div>
       <div>
-        <p className='text-left mx-4 mb-1 leading-5'>{props.post.text}</p>
+        <p className='text-left mx-4 mb-1 leading-5'>
+          <Linkify componentDecorator={componentDecorator}>
+            {props.post.Text}
+          </Linkify>
+        </p>
       </div>
       <div>
         <div className='flex flex-row items-center mb-1'>
@@ -91,11 +117,11 @@ const PostItem = (props: {
             {likesCount} likes
           </button>
           <p className='flex-grow  text-right mx-4'>
-            {props.post.commentsCount} comments
+            {props.post.Comments.length} comments
           </p>
         </div>
       </div>
-      <CommentSection postId={props.post.id} />
+      <CommentSection postId={props.post.Id} />
     </div>
   );
 };

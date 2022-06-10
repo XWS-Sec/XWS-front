@@ -3,7 +3,7 @@ import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import { getUserSkillsAsync, updateSkillsAsync } from './profileService';
 
 const SkillsContainer = () => {
-	const [skills, setSkills] = useState<any[]>(['pr']);
+	const [skills, setSkills] = useState<any[]>([]);
 	const [newSkill, setNewSkill] = useState('');
 
 	useEffect(() => {
@@ -51,7 +51,7 @@ const SkillsContainer = () => {
 						return (
 							<div key={index} className='pl-4 text-gray-500 flex flex-row justify-between'>
 								<span>{skill}</span>
-								<span className='cursor-pointer' onClick={removeSkill}>
+								<span className='cursor-pointer text-red-600' onClick={removeSkill}>
 									x
 								</span>
 							</div>

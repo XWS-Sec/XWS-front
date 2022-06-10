@@ -142,11 +142,54 @@ export const updateSkillsAsync = async (data: any): Promise<httpResponse> => {
 			};
 		});
 };
+export const updateInterestsAsync = async (data: any): Promise<httpResponse> => {
+	const options: any = {
+		method: 'POST',
+		url: `/api/interest`,
+		data: data,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
 
 export const getUserSkillsAsync = async (): Promise<httpResponse> => {
 	const options: any = {
 		method: 'GET',
 		url: `/api/skill`,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
+export const getUserInterestsAsync = async (): Promise<httpResponse> => {
+	const options: any = {
+		method: 'GET',
+		url: `/api/interest`,
 		headers: {
 			Accept: 'application/json',
 			'Content-type': 'application/json',

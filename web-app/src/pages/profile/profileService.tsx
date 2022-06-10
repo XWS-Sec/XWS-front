@@ -27,6 +27,7 @@ export const getUserInfoAsync = async (): Promise<httpResponse> => {
 			};
 		});
 };
+
 export const getUserPictureAsync = async (id: string): Promise<httpResponse> => {
 	const options: any = {
 		method: 'GET',
@@ -48,6 +49,7 @@ export const getUserPictureAsync = async (id: string): Promise<httpResponse> => 
 			};
 		});
 };
+
 export const removeImageAsync = async (): Promise<httpResponse> => {
 	const options: any = {
 		method: 'DELETE',
@@ -103,6 +105,51 @@ export const uploadImageAsync = async (file: any) => {
 		headers: {
 			Authorization: `Bearer ${token}`,
 			'Content-Type': 'multipart/form-data',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
+
+export const updateSkillsAsync = async (data: any): Promise<httpResponse> => {
+	const options: any = {
+		method: 'POST',
+		url: `/api/skill`,
+		data: data,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};
+
+export const getUserSkillsAsync = async (): Promise<httpResponse> => {
+	const options: any = {
+		method: 'GET',
+		url: `/api/skill`,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
 		},
 	};
 

@@ -13,20 +13,10 @@ import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import { getUserInfoAsync } from './profileService';
 import EditImage from './EditImage';
 
-enum ProfileTab {
-	POSTS,
-	EXPERIENCE,
-	SKILLS,
-}
-
 const EditProfilePage = () => {
 	const { username } = useParams();
 
 	const [user, setUser] = useState<any>(null);
-	const [userPrivateSectionVisible, setUserPrivateSectionVisible] = useState(false);
-	const [selectedTab, setSelectedTab] = useState(ProfileTab.POSTS);
-	const [selectedFile, setSelectedFile] = useState<any>(undefined);
-	const [image, setImage] = useState<string>('');
 
 	useEffect(() => {
 		getUserInfo();

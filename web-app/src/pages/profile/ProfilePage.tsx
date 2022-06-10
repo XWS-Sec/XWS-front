@@ -5,15 +5,19 @@ import { getUsersPosts } from '../../api/get-users-posts';
 import PostList from '../../components/posts/PostList';
 import UserInfoDto from '../../dtos/user-info.dto';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
+import ExperienceContainer from './ExperienceContainer';
+import JobOffersContainer from './JobOffersContainer';
 import ProfileInfo from './ProfileInfo';
 import ProfileTabButton from './ProfileTabButton';
+import SkillsContainer from './SkillsCointainer';
 import UserDoesNotExist from './UserDoesNotExist';
 import UserIsPrivateSection from './UserIsPrivateSection';
 
 enum ProfileTab {
-  POSTS,
-  EXPERIENCE,
-  SKILLS,
+	POSTS,
+	EXPERIENCE,
+	SKILLS,
+	JOB_OFFERS,
 }
 
 const ProfilePage = () => {
@@ -97,6 +101,10 @@ const ProfilePage = () => {
                     onClick={() => setSelectedTab(ProfileTab.EXPERIENCE)}
                   />
                   <ProfileTabButton
+                    tabName='Job offers'
+                    onClick={() => setSelectedTab(ProfileTab.JOB_OFFERS)}
+                  />
+                  <ProfileTabButton
                     tabName='Skills'
                     onClick={() => setSelectedTab(ProfileTab.SKILLS)}
                   />
@@ -108,8 +116,9 @@ const ProfilePage = () => {
                     user={user}
                   />
                 )}
-                {selectedTab === ProfileTab.EXPERIENCE && <div>Experience</div>}
-                {selectedTab === ProfileTab.SKILLS && <div>Skills</div>}
+                {selectedTab === ProfileTab.EXPERIENCE && <ExperienceContainer />}
+						{selectedTab === ProfileTab.JOB_OFFERS && <JobOffersContainer />}
+						{selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
               </div>
             )}
           </>

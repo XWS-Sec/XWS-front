@@ -10,6 +10,7 @@ import LoginPage from '../pages/LoginPage';
 import NotFoundPage from '../pages/NotFoundPage';
 import PasswordlessEmailSentPage from '../pages/PasswordlessEmailSentPage';
 import PasswordlessLogin from '../pages/PasswordlessLogin';
+import EditProfilePage from '../pages/profile/EditProfilePage';
 import ProfilePage from '../pages/profile/ProfilePage';
 import SearchUsersPage from '../pages/SearchUsersPage';
 import SignupPage from '../pages/SignupPage';
@@ -33,6 +34,7 @@ const MyRouter = (props: Props) => {
         <Route path='passwordlessLogin' element={<PasswordlessLogin />} />
         <Route path='changePassword' element={<ChangePasswordPage />} />
         <Route path='emailVerification' element={<EmailVerificationPage />} />
+		<Route path='users/:username/edit' element={<EditProfilePage />} />
         <Route
           path='passwordlessEmailSentPage'
           element={<PasswordlessEmailSentPage />}
@@ -45,10 +47,10 @@ const MyRouter = (props: Props) => {
         <Route path='follow-requests' element={<FollowRequestsPage />} />
         <Route path='*' element={<NotFoundPage />} />
 
-        <Route path='adminPanel' element={<AdminPanel />} />
-      </Routes>
-    </BrowserRouter>
-  );
+				<Route path='adminPanel' element={<AdminPanel />} />
+			</Routes>
+		</BrowserRouter>
+	);
 };
 
 export default MyRouter;

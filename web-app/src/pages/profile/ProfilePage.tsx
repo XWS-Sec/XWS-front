@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getUserInfoByUsernameRequest } from '../../api/get-user-info-by-username';
 import { getUsersPosts } from '../../api/get-users-posts';
 import PostList from '../../components/posts/PostList';
+import AuthContext from '../../context/auth-context';
 import UserInfoDto from '../../dtos/user-info.dto';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import ExperienceContainer from './ExperienceContainer';
@@ -14,14 +15,15 @@ import UserDoesNotExist from './UserDoesNotExist';
 import UserIsPrivateSection from './UserIsPrivateSection';
 
 enum ProfileTab {
-	POSTS,
-	EXPERIENCE,
-	SKILLS,
-	JOB_OFFERS,
+  POSTS,
+  EXPERIENCE,
+  SKILLS,
+  JOB_OFFERS,
 }
 
 const ProfilePage = () => {
   const { username } = useParams();
+  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
 
   const [user, setUser] = useState<UserInfoDto>();
@@ -91,24 +93,26 @@ const ProfilePage = () => {
               <UserIsPrivateSection username={user?.Username || ''} />
             ) : (
               <div className='flex flex-col'>
-                <div className='flex self-center justify-around w-full md:w-614px py-3'>
-                  <ProfileTabButton
-                    tabName='Posts'
-                    onClick={() => setSelectedTab(ProfileTab.POSTS)}
-                  />
-                  <ProfileTabButton
-                    tabName='Experience'
-                    onClick={() => setSelectedTab(ProfileTab.EXPERIENCE)}
-                  />
-                  <ProfileTabButton
-                    tabName='Job offers'
-                    onClick={() => setSelectedTab(ProfileTab.JOB_OFFERS)}
-                  />
-                  <ProfileTabButton
-                    tabName='Skills'
-                    onClick={() => setSelectedTab(ProfileTab.SKILLS)}
-                  />
-                </div>
+                {username === authContext.user.userName && (
+                  <div className='flex self-center justify-around w-full md:w-614px py-3'>
+                    <ProfileTabButton
+                      tabName='Posts'
+                      onClick={() => setSelectedTab(ProfileTab.POSTS)}
+                    />
+                    <ProfileTabButton
+                      tabName='Experience'
+                      onClick={() => setSelectedTab(ProfileTab.EXPERIENCE)}
+                    />
+                    <ProfileTabButton
+                      tabName='Job offers'
+                      onClick={() => setSelectedTab(ProfileTab.JOB_OFFERS)}
+                    />
+                    <ProfileTabButton
+                      tabName='Skills'
+                      onClick={() => setSelectedTab(ProfileTab.SKILLS)}
+                    />
+                  </div>
+                )}
                 {selectedTab === ProfileTab.POSTS && (
                   <PostList
                     posts={posts}
@@ -116,9 +120,13 @@ const ProfilePage = () => {
                     user={user}
                   />
                 )}
-                {selectedTab === ProfileTab.EXPERIENCE && <ExperienceContainer />}
-						{selectedTab === ProfileTab.JOB_OFFERS && <JobOffersContainer />}
-						{selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
+                {selectedTab === ProfileTab.EXPERIENCE && (
+                  <ExperienceContainer />
+                )}
+                {selectedTab === ProfileTab.JOB_OFFERS && (
+                  <JobOffersContainer />
+                )}
+                {selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
               </div>
             )}
           </>

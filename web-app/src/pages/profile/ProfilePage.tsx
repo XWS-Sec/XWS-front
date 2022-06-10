@@ -9,11 +9,13 @@ import { hardcodedPosts } from '../../hardcoded-data/hardcoded-posts';
 import ProfileTabButton from './ProfileTabButton';
 import SkillsContainer from './SkillsCointainer';
 import ExperienceContainer from './ExperienceContainer';
+import JobOffersContainer from './JobOffersContainer';
 
 enum ProfileTab {
 	POSTS,
 	EXPERIENCE,
 	SKILLS,
+	JOB_OFFERS,
 }
 
 const ProfilePage = () => {
@@ -38,10 +40,12 @@ const ProfilePage = () => {
 						<div className='flex self-center justify-around w-full md:w-614px py-3'>
 							<ProfileTabButton tabName='Posts' onClick={() => setSelectedTab(ProfileTab.POSTS)} />
 							<ProfileTabButton tabName='Experience' onClick={() => setSelectedTab(ProfileTab.EXPERIENCE)} />
+							<ProfileTabButton tabName='Job offers' onClick={() => setSelectedTab(ProfileTab.JOB_OFFERS)} />
 							<ProfileTabButton tabName='Skills' onClick={() => setSelectedTab(ProfileTab.SKILLS)} />
 						</div>
 						{selectedTab === ProfileTab.POSTS && <PostList posts={hardcodedPosts} fetching={false} removePostItem={() => {}} postsCount={hardcodedPosts.length} />}
 						{selectedTab === ProfileTab.EXPERIENCE && <ExperienceContainer />}
+						{selectedTab === ProfileTab.JOB_OFFERS && <JobOffersContainer />}
 						{selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
 					</div>
 				)}

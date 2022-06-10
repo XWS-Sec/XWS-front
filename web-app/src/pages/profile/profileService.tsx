@@ -251,3 +251,24 @@ export const getUserInterestsAsync = async (): Promise<httpResponse> => {
 			};
 		});
 };
+export const getJobOffersAsync = async (): Promise<httpResponse> => {
+	const options: any = {
+		method: 'GET',
+		url: `/api/jobOffer`,
+		headers: {
+			Accept: 'application/json',
+			'Content-type': 'application/json',
+		},
+	};
+
+	return axios(options)
+		.then((response) => {
+			return { status: response?.status, data: response?.data };
+		})
+		.catch((error) => {
+			return {
+				status: error?.response?.status,
+				message: error?.response?.data,
+			};
+		});
+};

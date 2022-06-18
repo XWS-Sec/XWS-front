@@ -5,6 +5,6 @@ export class PasswordShortError implements Error {
 
   constructor() {
     this.name = 'PasswordShortError';
-    this.message = 'Password must be at least 6 characters long.';
+    this.message = 'Password must be at least 8 characters long.';
   }
 }

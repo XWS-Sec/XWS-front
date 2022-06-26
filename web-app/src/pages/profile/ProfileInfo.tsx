@@ -152,7 +152,7 @@ const ProfileInfo = (props: {
 
   return (
     <div>
-      <UserListPopup
+      {/* <UserListPopup
         title='Followers'
         users={followers}
         isHidden={isFollowersPopupHidden}
@@ -173,7 +173,7 @@ const ProfileInfo = (props: {
         toggle={toggleFollowingPopup}
         incrementPage={incrementFollowingPage}
         fetchingUsers={fetchingFollowing}
-      />
+      /> */}
       <div className='flex flex-col py-1 px-1 md:py-4 items-center'>
         {props.user ? (
           <div className='flex flex-row'>
@@ -181,11 +181,7 @@ const ProfileInfo = (props: {
               {props.user.Id + '' === authContext.user.id + '' ? (
                 <ProfilePicture user={props.user} />
               ) : (
-                <UserImage
-                  src={props.user.profilePictureLocation}
-                  width={150}
-                  height={150}
-                />
+                <UserImage userId={props.user.Id} width={150} height={150} />
               )}
               <div className='mt-3'>
                 <FriendshipButtonsSection

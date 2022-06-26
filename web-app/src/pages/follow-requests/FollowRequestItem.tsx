@@ -65,11 +65,7 @@ const FollowRequestItem = (props: { followRequest: any }) => {
     <div className='flex md:flex-row flex-col px-4 py-3 mb-4 md:w-500px w-full items-center justify-between bg-white rounded shadow-lg'>
       <div className='flex mb-3 md:mb-0 items-center'>
         <Link to={`/users/${sender.Username}`}>
-          <UserImage
-            src={sender.profilePictureLocation}
-            width={50}
-            height={50}
-          />
+          <UserImage userId={sender.Id} width={50} height={50} />
         </Link>
         <div className='flex flex-col ml-2 flex-grow min-w-0'>
           <Link to={`/users/${sender.Username}`}>

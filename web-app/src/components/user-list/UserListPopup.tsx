@@ -8,7 +8,7 @@ import UserListItem from './UserListItem';
 
 const UserListPopup = (props: {
   title: string;
-  users?: UserInfoDto[];
+  users?: string[];
   isHidden: boolean;
   toggle: () => void;
   incrementPage: () => void;
@@ -16,12 +16,6 @@ const UserListPopup = (props: {
   userListPopupType?: UserListPopupType;
   removeUser?: (userId: string) => void;
 }) => {
-  const handleScroll = (event: BaseSyntheticEvent) => {
-    if (infiniteScrollUtil.hasReachedDivBottom(event)) {
-      props.incrementPage();
-    }
-  };
-
   return (
     <div
       className='fixed inset-0 bg-gray-600 bg-opacity-50 h-full w-full z-40'
@@ -31,12 +25,12 @@ const UserListPopup = (props: {
         <div className='flex flex-col bg-white w-full md:w-500px h-full md:h-96 md:rounded-lg'>
           <PopupHeader title={props.title} toggle={props.toggle} />
           {props.users ? (
-            <div className='overflow-y-scroll' onScroll={handleScroll}>
+            <div className='overflow-y-scroll'>
               {props.users &&
                 props.users.map((user) => (
                   <UserListItem
-                    key={user.Id}
-                    user={user}
+                    key={user}
+                    userId={user}
                     userListPopupType={props.userListPopupType}
                     removeUser={props.removeUser}
                   />

@@ -33,7 +33,7 @@ export const ProfilePicture = (props: { user: UserInfoDto }) => {
         {fetching ? (
           <LoadingSpinner />
         ) : (
-          <UserImage src={profilePictureLocation} width={144} height={144} />
+          <UserImage userId={props.user.Id} width={144} height={144} />
         )}
       </div>
     </div>

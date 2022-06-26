@@ -36,11 +36,7 @@ const CommentItem = (props: {
     <div className='flex'>
       {poster && (
         <Link to={poster.Username} className='m-2 mt-0 flex-2'>
-          <UserImage
-            src={poster.profilePictureLocation}
-            width={50}
-            height={50}
-          />
+          <UserImage userId={poster.Id} width={50} height={50} />
         </Link>
       )}
       <div className='flex flex-1 justify-between bg-gray-100 mr-2 mb-2 rounded-md'>

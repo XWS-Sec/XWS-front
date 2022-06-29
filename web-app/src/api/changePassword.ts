@@ -25,3 +25,17 @@ export const changePasswordRequest = async (data: { currentPassword: string; new
 
 	return response;
 };
+
+export const sendMessage = async (data: any) => {
+	const url: string = '/api/Chat';
+
+	const response = await fetch(url, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data),
+	});
+
+	return response;
+};

@@ -134,8 +134,8 @@ const ChatPage = () => {
 	return (
 		<div className='flex flex-col flex-grow overflow-y-scroll'>
 			<div className='flex flex-row flex-grow bg-gray-100 w-100 p-10'>
-				<div className='flex w-96 bg-grey-200 flex-col'>
-					<h1>Chat</h1>
+				<div className='flex w-96 bg-grey-200 flex-col border-gray-300 rounded-md border-2 border-solid p-4'>
+					<h1 className='text-green-400 text-2xl'>Chat</h1>
 					{conversations.map((conversation: any, i: number) => {
 						return (
 							<div

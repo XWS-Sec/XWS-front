@@ -7,3 +7,8 @@ export const getMessages = (number: number, userId: string) => {
 	const url = `/api/Chat/${number}/${userId}`;
 	return fetch(url);
 };
+
+export const getNotifications = () => {
+	const url = `/api/Notification`;
+	return fetch(url);
+};

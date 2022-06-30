@@ -1,6 +1,9 @@
+import { Switch } from '@material-tailwind/react';
 import axios from 'axios';
 import { Dispatch, SetStateAction, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { saveNotificationsAsync } from '../../api/changePassword';
+import { getNotifications } from '../../api/get-following';
 import { signupRequest } from '../../api/signup';
 import ErrorLabel from '../../components/common/ErrorLabel';
 import InputWithLabel from '../../components/common/InputWithLabel';
@@ -30,10 +33,23 @@ const EditImage = (props: { user: any }) => {
 	const [imageRemoved, setImageRemoved] = useState(false);
 	const [defaultImage, setDefaultImage] = useState(true);
 	const [processing, setProcessing] = useState(false);
+	const [notificationSettings, setNotificationSettings] = useState<any>({ newPost: true, newFollower: true, newMessage: true });
 
 	useEffect(() => {
 		getUserInfo(props?.user?.id);
+		getNotificationSettings();
 	}, [props.user]);
+
+	const getNotificationSettings = async () => {
+		const resp = await getNotifications();
+		if (resp.status == 200) {
+			setNotificationSettings(await resp.json());
+		}
+	};
+
+	const saveNotifications = async () => {
+		const resp = await saveNotificationsAsync(notificationSettings);
+	};
 
 	const getUserInfo = async (id: string) => {
 		const resp = await getUserPictureAsync(id);
@@ -100,7 +116,7 @@ const EditImage = (props: { user: any }) => {
 
 	return (
 		<div className='flex flex-col items-center md:h-screen bg-gray-200 overflow-y-auto'>
-			<div className='flex flex-col text-lg bg-white rounded my-3 lg:my-8 mx-3 p-8 shadow-lg md:w-500px'>
+			<div className='flex flex-col text-lg bg-white rounded my-3 lg:my-8 mx-3 p-8 shadow-lg md:w-500px ' style={{ marginBottom: '0.5rem' }}>
 				{image && (
 					<>
 						{' '}
@@ -170,6 +186,53 @@ const EditImage = (props: { user: any }) => {
 					</div>
 				)}
 				<input title='Add Video / Photo' style={{ display: 'none' }} accept='video/*, image/*' type='file' id='photo_upload' onChange={onImageChange} onClick={resetInputValue} />
+			</div>
+			<div className='  bg-white rounded  mx-3 p-8 shadow-lg md:w-500px mb-2'>
+				<div className='font-bold text-green-700'>Notifications 🛎</div>
+				<div className='flex flex-row justify-between'>
+					<div className='p-2 text-center'>
+						New Posts
+						<div
+							className='cursor-pointer'
+							onClick={() => {
+								setNotificationSettings({ ...notificationSettings, newPost: !notificationSettings.newPost });
+							}}
+						>
+							{notificationSettings.newPost ? '🔔' : '🔕'}
+						</div>
+					</div>
+					<div className='p-2 text-center'>
+						New Follower
+						<div
+							className='cursor-pointer'
+							onClick={() => {
+								setNotificationSettings({ ...notificationSettings, newFollower: !notificationSettings.newFollower });
+							}}
+						>
+							{notificationSettings.newFollower ? '🔔' : '🔕'}
+						</div>
+					</div>
+					<div className='p-2 text-center'>
+						New Message
+						<div
+							className='cursor-pointer'
+							onClick={() => {
+								setNotificationSettings({ ...notificationSettings, newMessage: !notificationSettings.newMessage });
+							}}
+						>
+							{notificationSettings.newMessage ? '🔔' : '🔕'}
+						</div>
+					</div>
+				</div>
+				<button
+					className='btnGreenWhite'
+					onClick={(e) => {
+						e.preventDefault();
+						saveNotifications();
+					}}
+				>
+					Save
+				</button>
 			</div>
 			<div className='flex flex-col text-lg bg-white rounded  mx-3 p-8 shadow-lg md:w-500px'>
 				<button

@@ -263,7 +263,7 @@ export const getJobOffersAsync = async (): Promise<httpResponse> => {
 
 	return axios(options)
 		.then((response) => {
-			return { status: response?.status, data: response?.data };
+			return { status: response?.status, data: JSON.parse(response?.data) };
 		})
 		.catch((error) => {
 			return {

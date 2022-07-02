@@ -221,7 +221,7 @@ export const getUserSkillsAsync = async (): Promise<httpResponse> => {
 
 	return axios(options)
 		.then((response) => {
-			return { status: response?.status, data: response?.data };
+			return { status: response?.status, data: JSON.parse(response?.data) };
 		})
 		.catch((error) => {
 			return {
@@ -242,7 +242,7 @@ export const getUserInterestsAsync = async (): Promise<httpResponse> => {
 
 	return axios(options)
 		.then((response) => {
-			return { status: response?.status, data: response?.data };
+			return { status: response?.status, data: JSON.parse(response?.data) };
 		})
 		.catch((error) => {
 			return {

@@ -16,13 +16,13 @@ const SkillsContainer = () => {
 	const getUserSkills = async () => {
 		const resp = await getUserSkillsAsync();
 		if (resp.status === HttpStatusCode.OK) {
-			setSkills(resp?.data?.skills ?? []);
+			setSkills(resp?.data?.Skills ?? []);
 		}
 	};
 	const getUserInterests = async () => {
 		const resp = await getUserInterestsAsync();
 		if (resp.status === HttpStatusCode.OK) {
-			setInterests(resp?.data?.interests ?? []);
+			setInterests(resp?.data?.Skills ?? []);
 		}
 	};
 

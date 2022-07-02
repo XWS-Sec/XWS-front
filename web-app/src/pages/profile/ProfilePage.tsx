@@ -7,6 +7,7 @@ import AuthContext from '../../context/auth-context';
 import UserInfoDto from '../../dtos/user-info.dto';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import ExperienceContainer from './ExperienceContainer';
+import FollowersRecommendationContainer from './FollowersRecommendationContainer';
 import JobOffersContainer from './JobOffersContainer';
 import ProfileInfo from './ProfileInfo';
 import ProfileTabButton from './ProfileTabButton';
@@ -114,11 +115,14 @@ const ProfilePage = () => {
                   </div>
                 )}
                 {selectedTab === ProfileTab.POSTS && (
-                  <PostList
-                    posts={posts}
-                    removePostItem={() => {}}
-                    user={user}
-                  />
+                  <>
+                    <FollowersRecommendationContainer/>
+                    <PostList
+                      posts={posts}
+                      removePostItem={() => {}}
+                      user={user}
+                    />
+                  </>
                 )}
                 {selectedTab === ProfileTab.EXPERIENCE && (
                   <ExperienceContainer />

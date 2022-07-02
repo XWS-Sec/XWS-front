@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import React, { useContext, useEffect, useState } from 'react';
+import { getRecommendedJobOffersAsync } from '../../api/get-job-offers';
 import ErrorLabel from '../../components/common/ErrorLabel';
 import InputWithLabel from '../../components/common/InputWithLabel';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -10,6 +11,7 @@ import { addExperienceAsync, deleteExperienceAsync, getJobOffersAsync, getUserIn
 const JobOffersContainer = () => {
 	const { user } = useContext(AuthContext);
 	const [jobOffers, setJobOffers] = useState<any[]>([]);
+	const [recommendedJobOffers,setRecommendenJobOffers] = useState<any[]>([]);
 	const [searchText, setSearchText] = useState('');
 
 	useEffect(() => {
@@ -20,8 +22,16 @@ const JobOffersContainer = () => {
 		const resp = await getJobOffersAsync();
 
 		if (resp.status === HttpStatusCode.OK) {
-			setJobOffers(resp?.data?.response ?? []);
+			setJobOffers(resp?.data?.JobOffers ?? []);
 		}
+
+		const response = await getRecommendedJobOffersAsync();
+
+		if(response.status != HttpStatusCode.OK)
+			return;
+		
+		const recommendedJobOffers = await response.json();
+		setRecommendenJobOffers(recommendedJobOffers.JobOffers);
 	};
 
 	const changeSearchText = (e: any) => {
@@ -41,11 +51,11 @@ const JobOffersContainer = () => {
 							return (
 								<div key={index} className='bg-gray-200 my-2 p-3 rounded-md relative'>
 									<div>
-										<p className='text-xl font-bold text-gray-500'>{offer.jobTitle}</p>
-										<p className=' text-gray-400'>{offer.description}</p>
-										<p className=' text-gray-400 italic'>Prerequisites: {offer.prerequisites}</p>
+										<p className='text-xl font-bold text-gray-500'>{offer.JobTitle}</p>
+										<p className=' text-gray-400'>{offer.Description}</p>
+										<p className=' text-gray-400 italic'>Prerequisites: {offer.Prerequisites}</p>
 									</div>
-									<a href={offer.linkToJobOffer} target='_blank' rel='noreferrer' className='bg-gray-500 p-2 rounded-md text-center block mt-2 text-white hover:bg-green-500 transition-colors duration-400'>
+									<a href={offer.LinkToJobOffer} target='_blank' rel='noreferrer' className='bg-gray-500 p-2 rounded-md text-center block mt-2 text-white hover:bg-green-500 transition-colors duration-400'>
 										Link
 									</a>
 								</div>
@@ -54,6 +64,32 @@ const JobOffersContainer = () => {
 					{jobOffers?.length === 0 && (
 						<div>
 							<p className='text-gray-500 italic text-center py-10'>You don't have any job offer</p>{' '}
+						</div>
+					)}
+				</div>
+			</div>
+			{/* Recommended job offers */}
+			<div className="md:w-500px mt-10 bg-white p-10 rounded-md">
+				<p className='text-2xl font-semibold'>Recommended job offers:</p>	
+				<div>
+					{recommendedJobOffers
+						?.map((offer: any, index: number) => {
+							return (
+								<div key={index} className='bg-gray-200 my-2 p-3 rounded-md relative'>
+									<div>
+										<p className='text-xl font-bold text-gray-500'>{offer.JobTitle}</p>
+										<p className=' text-gray-400'>{offer.Description}</p>
+										<p className=' text-gray-400 italic'>Prerequisites: {offer.Prerequisites}</p>
+									</div>
+									<a href={offer.LinkToJobOffer} target='_blank' rel='noreferrer' className='bg-gray-500 p-2 rounded-md text-center block mt-2 text-white hover:bg-green-500 transition-colors duration-400'>
+										Link
+									</a>
+								</div>
+							);
+						})}
+					{recommendedJobOffers?.length === 0 && (
+						<div>
+							<p className='text-gray-500 italic text-center py-10'>You don't have any recommended job offer</p>{' '}
 						</div>
 					)}
 				</div>

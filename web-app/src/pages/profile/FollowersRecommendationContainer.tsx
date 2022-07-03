@@ -24,16 +24,19 @@ const FollowersRecommendationContainer = () => {
         setUsers(userGuids);
     }
     return (
-        <div className="bg-gray-300 min-h-creen pb-16 flex flex-col items-center">
-            <div className="md:w-500px mt-10 bg-white p-10 rounded-md">
-                <p className="text-2xl font-semibold">People you may know</p>
-                {users &&
-                    users.map((user) => <p>{user}</p>)}
-                    {!users?.length && (
-            <div className='w-full text-center pt-3'>No results found</div>
-            )}
+        <div className='bg-gray-300 min-h-screen pb-16 flex flex-col items-center'>
+                <div className="bg-gray-300 min-h-creen pb-16 flex flex-col items-center">
+                    <div className="md:w-500px mt-10 bg-white p-10 rounded-md">
+                        <p className="text-2xl font-semibold">People you may know</p>
+                        {users &&
+                            users.map((user) => <UserListItem key={user} userId={user} />)}
+                            {!users?.length && (
+                    <div className='w-full text-center pt-3'>No results found</div>
+                    )}
+                </div>
             </div>
         </div>
+        
     )
 }
 

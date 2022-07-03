@@ -41,6 +41,34 @@ const JobOffersContainer = () => {
 
 	return (
 		<div className='bg-gray-300 min-h-screen pb-16 flex flex-col items-center'>
+			<div className="flex flex-row">
+				{/* Recommended job offers */}
+			<div className="md:w-500px mt-10 bg-white p-10 rounded-md">
+				<p className='text-2xl font-semibold'>Recommended job offers:</p>	
+				<div>
+					{recommendedJobOffers
+						?.map((offer: any, index: number) => {
+							return (
+								<div key={index} className='bg-gray-200 my-2 p-3 rounded-md relative'>
+									<div>
+										<p className='text-xl font-bold text-gray-500'>{offer.JobTitle}</p>
+										<p className=' text-gray-400'>{offer.Description}</p>
+										<p className=' text-gray-400 italic'>Prerequisites: {offer.Prerequisites}</p>
+									</div>
+									<a href={offer.LinkToJobOffer} target='_blank' rel='noreferrer' className='bg-gray-500 p-2 rounded-md text-center block mt-2 text-white hover:bg-green-500 transition-colors duration-400'>
+										Link
+									</a>
+								</div>
+							);
+						})}
+					{recommendedJobOffers?.length === 0 && (
+						<div>
+							<p className='text-gray-500 italic text-center py-10'>You don't have any recommended job offer</p>{' '}
+						</div>
+					)}
+				</div>
+			</div>
+			</div>
 			<div className='md:w-500px mt-10 bg-white p-10 rounded-md'>
 				<p className='text-2xl font-semibold'>Job offers:</p>
 				<input type='text' onChange={changeSearchText} placeholder='Search jobs' className='input w-full' />
@@ -64,32 +92,6 @@ const JobOffersContainer = () => {
 					{jobOffers?.length === 0 && (
 						<div>
 							<p className='text-gray-500 italic text-center py-10'>You don't have any job offer</p>{' '}
-						</div>
-					)}
-				</div>
-			</div>
-			{/* Recommended job offers */}
-			<div className="md:w-500px mt-10 bg-white p-10 rounded-md">
-				<p className='text-2xl font-semibold'>Recommended job offers:</p>	
-				<div>
-					{recommendedJobOffers
-						?.map((offer: any, index: number) => {
-							return (
-								<div key={index} className='bg-gray-200 my-2 p-3 rounded-md relative'>
-									<div>
-										<p className='text-xl font-bold text-gray-500'>{offer.JobTitle}</p>
-										<p className=' text-gray-400'>{offer.Description}</p>
-										<p className=' text-gray-400 italic'>Prerequisites: {offer.Prerequisites}</p>
-									</div>
-									<a href={offer.LinkToJobOffer} target='_blank' rel='noreferrer' className='bg-gray-500 p-2 rounded-md text-center block mt-2 text-white hover:bg-green-500 transition-colors duration-400'>
-										Link
-									</a>
-								</div>
-							);
-						})}
-					{recommendedJobOffers?.length === 0 && (
-						<div>
-							<p className='text-gray-500 italic text-center py-10'>You don't have any recommended job offer</p>{' '}
 						</div>
 					)}
 				</div>

@@ -22,6 +22,7 @@ import ProfileDescription from './ProfileDescription';
 const ProfileInfo = (props: {
   user: UserInfoDto | undefined;
   setUser: Dispatch<SetStateAction<UserInfoDto | undefined>>;
+  toggleFollowersPopup: () => void;
 }) => {
   const navigate = useNavigate();
   const authContext = useContext(AuthContext);
@@ -41,7 +42,6 @@ const ProfileInfo = (props: {
 
   const fetchFollowers = useCallback(async () => {
     setFetchingFollowers(true);
-
     const response = await fetch(
       '/api/users/followers?userId=' + props.user?.Id + '&page=' + followersPage
     );
@@ -117,6 +117,9 @@ const ProfileInfo = (props: {
   }, [followingPage, fetchFollowing]);
 
   const toggleFollowersPopup = () => {
+    //DODATO ZA XWS 
+    props.toggleFollowersPopup();
+    //
     if (followers.length === 0) {
       fetchFollowers();
     }

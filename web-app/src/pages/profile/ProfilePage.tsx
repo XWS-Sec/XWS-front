@@ -20,6 +20,7 @@ enum ProfileTab {
   EXPERIENCE,
   SKILLS,
   JOB_OFFERS,
+  FOLLOWERS
 }
 
 const ProfilePage = () => {
@@ -82,6 +83,10 @@ const ProfilePage = () => {
     fetchPosts();
   }, [user]);
 
+  const toggleFollowersPopup = () => {
+    setSelectedTab(ProfileTab.FOLLOWERS)
+  };
+
   return (
     <div className='flex flex-col flex-grow overflow-y-scroll'>
       <div className='flex flex-col flex-grow bg-gray-100'>
@@ -89,7 +94,7 @@ const ProfilePage = () => {
           <UserDoesNotExist username={username} />
         ) : (
           <>
-            <ProfileInfo user={user} setUser={setUser} />
+            <ProfileInfo toggleFollowersPopup={toggleFollowersPopup} user={user} setUser={setUser} />
             {userPrivateSectionVisible ? (
               <UserIsPrivateSection username={user?.Username || ''} />
             ) : (
@@ -115,14 +120,11 @@ const ProfilePage = () => {
                   </div>
                 )}
                 {selectedTab === ProfileTab.POSTS && (
-                  <>
-                    <FollowersRecommendationContainer/>
                     <PostList
                       posts={posts}
                       removePostItem={() => {}}
                       user={user}
                     />
-                  </>
                 )}
                 {selectedTab === ProfileTab.EXPERIENCE && (
                   <ExperienceContainer />
@@ -131,6 +133,7 @@ const ProfilePage = () => {
                   <JobOffersContainer />
                 )}
                 {selectedTab === ProfileTab.SKILLS && <SkillsContainer />}
+                {selectedTab === ProfileTab.FOLLOWERS && <FollowersRecommendationContainer/>}
               </div>
             )}
           </>

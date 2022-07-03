@@ -10,8 +10,10 @@ import AuthContext from '../../context/auth-context';
 import UserInfoDto from '../../dtos/user-info.dto';
 import { HttpStatusCode } from '../../utils/http-status-code.enum';
 import LoadingSpinner from '../common/LoadingSpinner';
+import BlockButton from './BlockButton';
 import CancelRequestButton from './CancelRequestButton';
 import FollowButton from './FollowButton';
+import UnblockButton from './UnblockButton';
 import UnfollowButton from './UnfollowButton';
 
 const FriendshipButtonsSection = (props: {
@@ -21,8 +23,8 @@ const FriendshipButtonsSection = (props: {
   const authContext = useContext(AuthContext);
 
   const [isFollowedByPrincipal, setIsFollowedByPrincipal] = useState<boolean>();
-  const [isRequestedByPrincipal, setIsRequestedByPrincipal] =
-    useState<boolean>();
+  const [isRequestedByPrincipal, setIsRequestedByPrincipal] = useState<boolean>();
+  const [isBlockedByPrincipal, setIsBlockedByPrincipal] = useState<boolean>();
 
   useEffect(() => {
     if (!props.user) {
@@ -35,6 +37,14 @@ const FriendshipButtonsSection = (props: {
       switch (response.status) {
         case HttpStatusCode.OK:
           const message = await response.json();
+
+          if(message.Blocked.find((f: any) => f.Id === props.user!.Id)){
+            setIsBlockedByPrincipal(true);
+            break;
+          }
+
+          setIsBlockedByPrincipal(false);
+
           if (message.Following.find((f: any) => f.Id === props.user!.Id)) {
             setIsFollowedByPrincipal(true);
             setIsRequestedByPrincipal(false);
@@ -43,9 +53,7 @@ const FriendshipButtonsSection = (props: {
 
           setIsFollowedByPrincipal(false);
 
-          if (
-            message.FollowRequested.find((f: any) => f.Id === props.user!.Id)
-          ) {
+          if (message.FollowRequested.find((f: any) => f.Id === props.user!.Id)) {
             setIsRequestedByPrincipal(true);
             break;
           }
@@ -69,30 +77,45 @@ const FriendshipButtonsSection = (props: {
             <div className='flex flex-row justify-center text-sm'>
               {isFollowedByPrincipal !== undefined &&
                 isRequestedByPrincipal !== undefined &&
-                (isFollowedByPrincipal ? (
-                  <UnfollowButton
+                isBlockedByPrincipal !== undefined &&
+                (
+                  isBlockedByPrincipal ? (
+                    <UnblockButton
                     userId={props.user.Id}
-                    onUnfollow={() => setIsFollowedByPrincipal(false)}
-                  />
-                ) : isRequestedByPrincipal ? (
-                  <CancelRequestButton
-                    user={props.user}
-                    setUser={props.setUser}
-                  />
-                ) : (
-                  <FollowButton
-                    userId={props.user.Id}
-                    onFollow={(requested: boolean) => {
-                      if (requested) {
-                        setIsRequestedByPrincipal(true);
-                      } else {
-                        setIsFollowedByPrincipal(true);
-                      }
-                    }}
-                  />
-                ))}
+                    onUnblock={() => setIsBlockedByPrincipal(false)}/>
+                  ) : 
+                  (isFollowedByPrincipal ? (
+                    <UnfollowButton
+                      userId={props.user.Id}
+                      onUnfollow={() => setIsFollowedByPrincipal(false)}
+                    />
+                  ) : isRequestedByPrincipal ? (
+                    <CancelRequestButton
+                      user={props.user}
+                      setUser={props.setUser}
+                    />
+                  ) : (
+                    <>
+                      <FollowButton
+                        userId={props.user.Id}
+                        onFollow={(requested: boolean) => {
+                          if (requested) {
+                            setIsRequestedByPrincipal(true);
+                          } else {
+                            setIsFollowedByPrincipal(true);
+                          }
+                        }}
+                      />
+                      <BlockButton
+                      userId={props.user.Id}
+                      onBlock={() => setIsBlockedByPrincipal(true)}/>
+                    </>
+                  ))
+                )
+              }
               {(isFollowedByPrincipal === undefined ||
-                isRequestedByPrincipal === undefined) && (
+                isRequestedByPrincipal === undefined ||
+                isBlockedByPrincipal === undefined) && (
                 <div className='flex justify-center w-24'>
                   <LoadingSpinner />
                 </div>

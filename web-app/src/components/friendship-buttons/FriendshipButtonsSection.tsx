@@ -39,7 +39,7 @@ const FriendshipButtonsSection = (props: {
           const message = await response.json();
 
           if(message.Blocked.find((f: any) => f.Id === props.user!.Id)){
-            setIsBlockedByPrincipal(true);
+            blockUser();
             break;
           }
 
@@ -68,6 +68,12 @@ const FriendshipButtonsSection = (props: {
 
     fetchFollow();
   }, [props.user]);
+
+  const blockUser = async () => {
+    setIsFollowedByPrincipal(false);
+    setIsRequestedByPrincipal(false);
+    setIsBlockedByPrincipal(true);
+  }
 
   return (
     <>

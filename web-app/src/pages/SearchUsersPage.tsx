@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getFollowRequest } from '../api/get-following';
 import { searchUsersRequest } from '../api/search-users';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import UserListItem from '../components/user-list/UserListItem';
@@ -17,6 +18,7 @@ const SearchUsersPage = (props: {
   const [users, setUsers] = useState<UserInfoDto[]>();
   const [fetching, setFetching] = useState(false);
 
+
   useEffect(() => {
     const fetchResults = async () => {
       const query: URLSearchParams = new URLSearchParams(
@@ -29,10 +31,12 @@ const SearchUsersPage = (props: {
 
       const response = await searchUsersRequest(criteria);
 
+      
+
       switch (response.status) {
         case HttpStatusCode.OK:
-          const users = await response.json();
-          setUsers(users);
+          const usersResponse = await response.json();
+          setUsers(await removeBlockedUsers(usersResponse));
           break;
         case HttpStatusCode.UNAUTHORIZED:
           localStorage.clear();
@@ -45,6 +49,18 @@ const SearchUsersPage = (props: {
 
       setFetching(false);
     };
+
+    const removeBlockedUsers = async (users: any) => {
+      const resp = await getFollowRequest();
+      if(resp.status != HttpStatusCode.OK)
+        return users;
+
+      const message = await resp.json();
+      const blockedUsers = message.Blocked;
+      const filteredUsers = users.filter((user: any) => blockedUsers.find((f: any) => f.Id != user.Id));
+      return filteredUsers;
+      
+    }
 
     fetchResults();
 
@@ -59,7 +75,7 @@ const SearchUsersPage = (props: {
     <div className='flex flex-col flex-grow items-center bg-gray-300 overflow-y-scroll'>
       <div className='w-full md:w-614px m-5 bg-white pb-3'>
         {users &&
-          users.map((user) => <UserListItem key={user.Id} user={user} />)}
+          users.map((user) => <UserListItem key={user.Id} user={user} userId={user.Id}/>)}
         {!users?.length && (
           <div className='w-full text-center pt-3'>No results found</div>
         )}

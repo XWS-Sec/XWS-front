@@ -16,6 +16,7 @@ function App() {
   const [user, setUser] = useState<User>(localStorageUtil.getUser());
   const [connection, setConnection] = useState<HubConnection>();
   const [notifications, setNotifications] = useState<string[]>([]);
+  const [newMessage, setNewMessage] = useState<any>();
 
   const updateAuthContext = (user: User) => {
     setUser(user);
@@ -38,6 +39,7 @@ function App() {
   useEffect(() => {
     if (connection) {
       connection.on('Response', handleResponse);
+      connection.on('newMessage', handleNewMessageNotificationResponse);
       connection.on('newPost', handleNewPostNotificationResponse);
       connection.on('notification', handleNewFollowerNotificationResponse);
       connection.start().then((value) => {
@@ -49,6 +51,23 @@ function App() {
 
   const handleResponse = (message: string) => {
     fetch('/api/Notification');
+  };
+
+  const handleNewMessageNotificationResponse = async (response: any) => {
+    if (!user || response.senderId === user.id) {
+      return;
+    }
+
+    console.log('new message:', response);
+    const senderResponse = await getUserInfoByIdRequest(response.senderId);
+    const sender = await senderResponse.json();
+
+    setNewMessage(response);
+
+    setNotifications((notifications) => [
+      ...notifications,
+      `${sender.Username}: ${response.message}`,
+    ]);
   };
 
   const handleNewPostNotificationResponse = async (response: string) => {
@@ -92,9 +111,7 @@ function App() {
           updateAuthContext: updateAuthContext,
         }}
       >
-        <RBACProvider roles={[user.role]}>
-          <MyRouter loggedIn={user.loggedIn} />
-        </RBACProvider>
+        <MyRouter loggedIn={user.loggedIn} newMessage={newMessage} />
       </AuthContext.Provider>
     </div>
   );

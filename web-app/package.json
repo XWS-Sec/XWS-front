@@ -2,7 +2,7 @@
   "name": "web-app",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://localhost:44322",
+  "proxy": "http://localhost:7700",
   "dependencies": {
     "@material-tailwind/react": "^1.0.6",
     "@microsoft/signalr": "^6.0.5",
@@ -31,7 +31,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "set HTTPS=true&&set SSL_CRT_FILE=ssl/certificate.crt&&set SSL_KEY_FILE=ssl/key-decrypted.key&&react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

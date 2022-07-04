@@ -10,6 +10,7 @@ import { getUserInfoByIdRequest } from './api/get-user-info-by-id';
 import MyRouter from './components/MyRouter';
 import Notifications from './components/notifications/Notifications';
 import AuthContext, { User } from './context/auth-context';
+import { HttpStatusCode } from './utils/http-status-code.enum';
 import localStorageUtil from './utils/local-storage/local-storage.util';
 
 function App() {
@@ -23,9 +24,26 @@ function App() {
   };
 
   useEffect(() => {
+    const fetchNotifSettings = async () => {
+      const response = await fetch('/api/Notification');
+      if (response.status === HttpStatusCode.OK) {
+        const settings = await response.json();
+        console.log(settings);
+        console.log(settings.newPost);
+
+        localStorage.setItem('DisplayNewPostNotif', settings.newPost);
+        localStorage.setItem('DisplayNewMessageNotif', settings.newMessage);
+        localStorage.setItem('DisplayNewFollowNotif', settings.newFollower);
+      }
+    };
+
+    fetchNotifSettings();
+  }, []);
+
+  useEffect(() => {
     console.log('creating new connection');
     const newConnection = new HubConnectionBuilder()
-      .withUrl(`https://localhost:44322/hub`, {
+      .withUrl(`http://localhost:7700/hub`, {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
       })
@@ -47,6 +65,12 @@ function App() {
         connection?.invoke('Connect', user?.id);
       });
     }
+
+    return () => {
+      connection?.off('newMessage');
+      connection?.off('newPost');
+      connection?.off('notification');
+    };
   }, [connection]);
 
   const handleResponse = (message: string) => {
@@ -54,7 +78,8 @@ function App() {
   };
 
   const handleNewMessageNotificationResponse = async (response: any) => {
-    if (!user || response.senderId === user.id) {
+    const display = localStorage.getItem('DisplayNewMessageNotif') === 'true';
+    if (!display || !user || response.senderId === user.id) {
       return;
     }
 
@@ -71,6 +96,12 @@ function App() {
   };
 
   const handleNewPostNotificationResponse = async (response: string) => {
+    const display = localStorage.getItem('DisplayNewPostNotif') === 'true';
+
+    if (!display) {
+      return;
+    }
+
     console.log('new post from:', response);
     const userResponse = await getUserInfoByIdRequest(response);
     const user = await userResponse.json();
@@ -82,6 +113,12 @@ function App() {
   };
 
   const handleNewFollowerNotificationResponse = async (response: string) => {
+    const display = localStorage.getItem('DisplayNewFollowNotif') === 'true';
+
+    if (!display) {
+      return;
+    }
+
     console.log('notification:', response);
 
     if (response === 'New follower!') {

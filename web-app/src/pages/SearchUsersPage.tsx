@@ -18,7 +18,6 @@ const SearchUsersPage = (props: {
   const [users, setUsers] = useState<UserInfoDto[]>();
   const [fetching, setFetching] = useState(false);
 
-
   useEffect(() => {
     const fetchResults = async () => {
       const query: URLSearchParams = new URLSearchParams(
@@ -30,8 +29,6 @@ const SearchUsersPage = (props: {
       setFetching(true);
 
       const response = await searchUsersRequest(criteria);
-
-      
 
       switch (response.status) {
         case HttpStatusCode.OK:
@@ -52,15 +49,15 @@ const SearchUsersPage = (props: {
 
     const removeBlockedUsers = async (users: any) => {
       const resp = await getFollowRequest();
-      if(resp.status != HttpStatusCode.OK)
-        return users;
+      if (resp.status != HttpStatusCode.OK) return users;
 
       const message = await resp.json();
-      const blockedUsers = message.Blocked;
-      const filteredUsers = users.filter((user: any) => blockedUsers.find((f: any) => f.Id != user.Id));
+      const blockedFrom = message.BlockedFrom;
+      const filteredUsers = users.filter(
+        (user: any) => !blockedFrom.find((f: any) => f.Id === user.Id)
+      );
       return filteredUsers;
-      
-    }
+    };
 
     fetchResults();
 
@@ -75,7 +72,9 @@ const SearchUsersPage = (props: {
     <div className='flex flex-col flex-grow items-center bg-gray-300 overflow-y-scroll'>
       <div className='w-full md:w-614px m-5 bg-white pb-3'>
         {users &&
-          users.map((user) => <UserListItem key={user.Id} user={user} userId={user.Id}/>)}
+          users.map((user) => (
+            <UserListItem key={user.Id} user={user} userId={user.Id} />
+          ))}
         {!users?.length && (
           <div className='w-full text-center pt-3'>No results found</div>
         )}
